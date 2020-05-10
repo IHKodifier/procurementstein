@@ -17,4 +17,5 @@ class User {
   String get lastModified => _lastmodified;
 
   User(this._userid, this._firstName, this._lastName);
+ 
 }

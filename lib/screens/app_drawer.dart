@@ -10,8 +10,12 @@ import 'package:provider/provider.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AuthenticationBloc authBloc = Provider.of<AuthenticationBloc>(context);
+    var authBloc = Provider.of<AuthenticationBloc>(context);
 
+    return _buildDrawer(context,authBloc);
+  }
+
+  Widget _buildDrawer(BuildContext context, var authBloc) {
     return Drawer(
       elevation: 2.0,
       child: ListView(
@@ -19,22 +23,22 @@ class AppDrawer extends StatelessWidget {
           Container(
             // the decoration below did not produce desired visual look.
             // decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(150), topLeft: Radius.circular(150)), color: Colors.white),
-                      child: new UserAccountsDrawerHeader(
-                // colo
-                // margin: EdgeInsets.all(4.0),
-                currentAccountPicture: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: new CircleAvatar(
-                    backgroundImage: new NetworkImage('http://i.pravatar.cc/309'),
-                  ),
+            child: new UserAccountsDrawerHeader(
+              // colo
+              // margin: EdgeInsets.all(4.0),
+              currentAccountPicture: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: new CircleAvatar(
+                  backgroundImage: new NetworkImage('http://i.pravatar.cc/300'),
                 ),
-                accountName: new Text(authBloc.authenticatedUser.displayName,
-                    style: Theme.of(context).textTheme.headline5
-                    // .copyWith(fontSize: 18, color: Colors.white),
-                    ),
-                accountEmail: new Text(authBloc.authenticatedUser.userName,
-                    style: Theme.of(context).textTheme.subtitle1),
               ),
+              accountName: new Text(authBloc.authenticatedUser.displayName,
+                  style: Theme.of(context).textTheme.headline5
+                  // .copyWith(fontSize: 18, color: Colors.white),
+                  ),
+              accountEmail: new Text(authBloc.authenticatedUser.userName,
+                  style: Theme.of(context).textTheme.subtitle1),
+            ),
           ),
           new ListTile(
             title: new Text('About Page'),
@@ -46,6 +50,7 @@ class AppDrawer extends StatelessWidget {
               //         builder: (BuildContext context) => new AboutPage()));
             },
           ),
+          // About page
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 32),
             child: RaisedButton(
@@ -57,6 +62,7 @@ class AppDrawer extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
           ),
+          //login button
           RaisedButton(
             child: Text('try another user'),
             color: Theme.of(context).primaryColor,
@@ -68,14 +74,10 @@ class AppDrawer extends StatelessWidget {
                 User('Amjad@Heartfile.org', 'Amjad ', 'Khan'),
                 User('Qadeer@Heartfile.org', 'Qadeer', 'Khan'),
                 User('AAmra@Heartfile.org', 'Aamra', 'Q. Abbasi'),
-                User('Uzair@Heartfile.org', 'Uzair', 'Baloch'),
-
+               User('Uzair@Heartfile.org', 'Sardar Uzair Kan ', 'Baloch'),
               ];
               Random random = Random();
-
-
-             
-              authBloc.setAuthenticatedUser(users[random.nextInt(6)]);
+              authBloc.setAuthenticatedUser(users[random.nextInt(7)],);
             },
           ),
         ],

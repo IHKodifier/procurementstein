@@ -7,9 +7,13 @@ import 'package:provider/provider.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthenticationBloc>.value(
-          value : AuthenticationBloc(),
-          child: MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthenticationBloc>(
+          create: (_) => AuthenticationBloc(),
+        ),
+      ],
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'procuremenStein-Stein',
         theme: ThemeData(
