@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:procuremenstein/bloc/user.dart';
+import 'package:procuremenstein/bloc/app_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationBloc extends ChangeNotifier {
-  User _user = User('Ihtiram@Heartfile.org', 'Ihtiram', 'Khattak');
+  //the currently logged in [AppUser]
+  AppUser _user = AppUser();
+  AppUser get authenticatedUser => _user;
 
-  User get authenticatedUser => _user;
+AuthenticateUser(){
+  
+}
 
- 
-  setAuthenticatedUser(User user){
+  //set AuthenticatedUser Across the app
+
+  // also set the internal [FireBaseUser]  for App User class
+  setAuthenticatedUser(AppUser user, FirebaseUser firebaseUser) {
     this._user = user;
+    this._user.fireUser = firebaseUser;
     notifyListeners();
   }
 }

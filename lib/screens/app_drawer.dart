@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:procuremenstein/bloc/authentication_bloc.dart';
-import 'package:procuremenstein/bloc/user.dart';
+import 'package:procuremenstein/bloc/app_user.dart';
 import 'package:procuremenstein/bloc/authentication_bloc.dart';
 
 import 'package:provider/provider.dart';
@@ -67,14 +67,9 @@ class AppDrawer extends StatelessWidget {
             child: Text('try another user'),
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              List<User> users = <User>[
-                User('Nasir@Heartfile.org', 'Nasir', 'Mehmood'),
-                User('Kassim@Heartfile.org', 'Kassim', 'Nishtar'),
-                User('Saba@Heartfile.org', 'Saba', 'Amjad'),
-                User('Amjad@Heartfile.org', 'Amjad ', 'Khan'),
-                User('Qadeer@Heartfile.org', 'Qadeer', 'Khan'),
-                User('AAmra@Heartfile.org', 'Aamra', 'Q. Abbasi'),
-               User('Uzair@Heartfile.org', 'Sardar Uzair Kan ', 'Baloch'),
+              List<AppUser> users = <AppUser>[
+                
+               AppUser(),
               ];
               Random random = Random();
               authBloc.setAuthenticatedUser(users[random.nextInt(7)],);

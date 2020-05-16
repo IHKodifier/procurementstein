@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "657415427896",
+    "firebase_url": "https://procuremenstein.firebaseio.com",
+    "project_id": "procuremenstein",
+    "storage_bucket": "procuremenstein.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657415427896:android:2414e040f73ec6150313cd",
+        "android_client_info": {
+          "package_name": "EnigmaTek.Inc.procuremenstein"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657415427896-ooao1of2k2tiu0kq1sr04adg5b6vsne1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5efobdQiw_vueGi-aPgQ5HjuBbwF4eaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657415427896-ooao1of2k2tiu0kq1sr04adg5b6vsne1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

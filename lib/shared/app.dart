@@ -11,7 +11,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.orange,
         // brightness: Brightness.dark
       ),
-      home: MyHomePage(),
+      home: AppHome(),
     );
   }
 }
