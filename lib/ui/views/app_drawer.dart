@@ -1,18 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:procuremenstein/bloc/authentication_bloc.dart';
-import 'package:procuremenstein/bloc/app_user.dart';
-import 'package:procuremenstein/bloc/authentication_bloc.dart';
+import 'package:procuremenstein/services/authentication_service.dart';
+// import 'package:procuremenstein/bloc/app_user.dart';
+// import 'package:procuremenstein/bloc/authentication_bloc.dart';
 
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthenticationBloc>(context);
+    // var authBloc = Provider.of<AuthenticationService>(context);
 
-    return _buildDrawer(context,authBloc);
+    // return _buildDrawer(context,authBloc);
   }
 
   Widget _buildDrawer(BuildContext context, var authBloc) {
@@ -67,12 +67,7 @@ class AppDrawer extends StatelessWidget {
             child: Text('try another user'),
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              List<AppUser> users = <AppUser>[
-                
-               AppUser(),
-              ];
-              Random random = Random();
-              authBloc.setAuthenticatedUser(users[random.nextInt(7)],);
+            
             },
           ),
         ],

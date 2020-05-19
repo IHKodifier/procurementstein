@@ -19,7 +19,7 @@ class LoadingSpinner extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
+          children: <Widget>[ 
             SpinKitHourGlass(
               color: Theme.of(context).primaryColor,
               size: 50,
