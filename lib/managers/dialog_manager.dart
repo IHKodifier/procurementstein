@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:procuremenstein/locator.dart';
+import 'package:procuremenstein/app/service_locator.dart';
+import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/models/dialog_models.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 
@@ -11,7 +12,7 @@ class DialogManager extends StatefulWidget {
 }
 
 class _DialogManagerState extends State<DialogManager> {
-  DialogService _dialogService = locator<DialogService>();
+  DialogService _dialogService = serviceLocator<DialogService>();
 
   @override
   void initState() {

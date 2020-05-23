@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
-import 'package:procuremenstein/ui/router.dart';
-import 'package:procuremenstein/ui/views/login_view.dart';
-import 'package:procuremenstein/ui/views/signup_view.dart';
-import 'package:provider/provider.dart';
+import 'package:procuremenstein/app/route_paths.dart' as routes;
+import 'package:procuremenstein/services/router.dart' as router;
 
-import 'locator.dart';
-import 'managers/dialog_manager.dart';
+
+import 'package:procuremenstein/app/service_locator.dart';
 
 
 class App extends StatelessWidget {
@@ -16,14 +14,6 @@ class App extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'procuremenStein',
-                        
-
-        builder: (context, child) => Navigator(
-        key: locator<DialogService>().dialogNavigationKey,
-        onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(child: child)),
-      ),
-      navigatorKey: locator<NavigationService>().navigationKey,
         theme: ThemeData(
         primaryColor: Color.fromARGB(255, 9, 202, 172),
         backgroundColor: Color.fromARGB(255, 26, 27, 30),
@@ -31,13 +21,22 @@ class App extends StatelessWidget {
               fontFamily: 'Open Sans',
             ),
       ),
-        home: LoginView(),
-        onGenerateRoute: generateRoute,
+       //TODO FIX THIS
+        onGenerateRoute: router.generateRoute,
+        navigatorKey: serviceLocator<NavigationService>().navigationKey,
+        initialRoute: routes.LoginRoute,
+       
         
     );
     // );
   }
 }
+
+
+
+
+
+
 
                         //routes
         // routes: <String, WidgetBuilder>{
