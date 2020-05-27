@@ -1,42 +1,89 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/app_user.dart';
 
 class AuthenticationService {
-  final FirebaseAuth firebaseAuthInstance = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
 
   Future loginWithEmail({
     @required String email,
     @required String password,
   }) async {
     try {
-      var user = await firebaseAuthInstance.signInWithEmailAndPassword(
+      var user = await _firebaseAuthInstance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return (user != null);
+      if (user != null) {
+        print('sign in successfull');
+        return (user != null);
+      } else {}
     } catch (e) {
       print(e.message);
       return (e.message);
     }
   }
 
-  Future signUpWithEmail({
+  Future<dynamic> signUpWithEmail({
     @required String email,
     @required String password,
+    @required String nickName,
   }) async {
+    var authResult;
     try {
-      var authResult =
-          await firebaseAuthInstance.createUserWithEmailAndPassword(
+      authResult = await _firebaseAuthInstance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return authResult.user != null;
+      if (authResult.user != null) {
+        print('\n\n\n Fireuser created \n\n\n');
+
+        //create an [AppUser]
+        await createAppUser(authResult, nickName);
+        print('\n\n\n\n app user created\n\n\n');
+        return authResult;
+      } else
+        return false;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future signout() async {
+    try {
+      await _firebaseAuthInstance.signOut();
+      print('logged out of FireBase');
     } catch (e) {
       print(e.message);
     }
   }
 
+  Future<bool> createAppUser(AuthResult authResult, String nickName) async {
+    try {
+      Firestore.instance.collection('/users').add({
+        'email': authResult.user.email,
+        'uid': authResult.user.uid,
+        'roles': 'buyer,seller',
+        'nickName': nickName,
+        'createdBy': 'debugAdmin',
+      }).then((value) {
+        print('\n\n\n App User createdin firestore\n\n\n');
+        if (value != null) {
+          return true;
+        } else {
+          return false;
+        }
+      }).catchError((e) {
+        print('error encountered: ${e.toString()}');
+      });
+    } catch (e) {
+      print(e.message);
+    }
+  }
+
+// }
 // AppUser _user = null;
 //   AppUser get authenticatedUser => _user;
 

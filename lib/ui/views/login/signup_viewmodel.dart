@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:procuremenstein/app/route_paths.dart';
-// import 'package:procuremenstein/constants/route_names.dart';
+import 'package:procuremenstein/app/service_locator.dart';
+import 'package:procuremenstein/app/base_model.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
 
-import 'package:procuremenstein/app/service_locator.dart';
-import 'package:procuremenstein/app/base_model.dart';
-class LoginViewModel extends BaseModel {
-
-final AuthenticationService _authenticationService =
+class SignupViewModel extends BaseModel {
+  final AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
   final DialogService _dialogService = serviceLocator<DialogService>();
-  final NavigationService _navigationService = serviceLocator<NavigationService>();
+  final NavigationService _navigationService =
+      serviceLocator<NavigationService>();
 
   Future login({@required String email, @required String password}) async {
     setBusy(true);
@@ -24,7 +22,7 @@ final AuthenticationService _authenticationService =
 
     if (result is bool) {
       if (result) {
-        _navigationService.navigateTo('HomeView');
+        _navigationService.navigateTo('HomeViewRoute');
       } else {
         await _dialogService.showDialog(
           title: 'Login Failure',
@@ -39,7 +37,26 @@ final AuthenticationService _authenticationService =
     }
   }
 
+  Future<dynamic> signupWithEmil(
+    String email,
+    String password,
+    String nickName,
+  ) async {
+    setBusy(true);
+    try {
+      var loginResult = await _authenticationService.signUpWithEmail(
+          email: email, password: password, nickName: nickName);
+      if (loginResult.user != null) {
+        //user was SUCCESSFULLY CREATED in Firbase
+        setBusy(false);
+        _navigationService.navigateTo('HomeViewRoute');
+      } else if (!loginResult) {
+        //user was not successfully created
 
-
-
+      } else {}
+    } catch (e) {
+      setBusy(false);
+      print(e.toString());
+    }
+  }
 }

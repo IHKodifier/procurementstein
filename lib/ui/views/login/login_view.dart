@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:procuremenstein/ui/views/login/login_viewmodel.dart';
+import 'package:stacked/stacked.dart';
 
 class LoginView extends StatelessWidget {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  BuildContext _localContext;
   @override
   Widget build(BuildContext context) {
+    this._localContext = context;
+    return ViewModelBuilder<LoginViewModel>.reactive(
+        viewModelBuilder: () => LoginViewModel(),
+        builder: (context, model, child) => _buildScaffold(context, model));
+  }
+
+  Widget _buildScaffold(BuildContext context, LoginViewModel model) {
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -16,21 +29,26 @@ class LoginView extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
                   child: Text('Hello',
                       style: TextStyle(
-                          fontSize: 80.0, fontWeight: FontWeight.bold)),
+                          fontFamily: GoogleFonts.cabin().toString(),
+                          fontSize: 80.0,
+                          fontWeight: FontWeight.bold)),
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
                   child: Text('There',
                       style: TextStyle(
-                          fontSize: 80.0, fontWeight: FontWeight.bold)),
+                          fontFamily: GoogleFonts.cabin().toString(),
+                          fontSize: 80.0,
+                          fontWeight: FontWeight.bold)),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(220.0, 175.0, 0.0, 0.0),
-                  child: Text('.',
+                  padding: EdgeInsets.fromLTRB(225.0, 155.0, 0.0, 0.0),
+                  child: Text('!',
                       style: TextStyle(
-                          fontSize: 80.0,
+                          fontFamily: GoogleFonts.cabin().toString(),
+                          fontSize: 100.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green)),
+                          color: Theme.of(_localContext).primaryColor)),
                 )
               ],
             ),
@@ -45,55 +63,59 @@ class LoginView extends StatelessWidget {
                   SizedBox(height: 5.0),
                   buildForgotPassword(),
                   SizedBox(height: 40.0),
-                  buildLoginButton(),
+                  buildLoginButton(model),
                   SizedBox(height: 20.0),
                   _buildLoginWithFacebook(),
                   _buildLoginWithGoogle(),
                 ],
               )),
           SizedBox(height: 15.0),
-          _buildNeedToSignUpRow(context)
+          _buildNeedToSignUpRow(context, model)
         ],
       ),
     );
   }
 
-  Row _buildNeedToSignUpRow(BuildContext context) {
+  Row _buildNeedToSignUpRow(BuildContext context, LoginViewModel model) {
     return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'New to ProcuremenStein ?',
-              style: TextStyle(fontFamily: 'Montserrat'),
-            ),
-            SizedBox(width: 5.0),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed('/signup');
-              },
-              child: Text(
-                'Register',
-                style: TextStyle(
-                    color: Colors.green,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline),
-              ),
-            )
-          ],
-        );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'New to ProcuremenStein ?',
+          style: TextStyle(fontFamily: 'Montserrat'),
+        ),
+        SizedBox(width: 5.0),
+        InkWell(
+          onTap: () {
+            model.navigateToSignup();
+          },
+          child: Text(
+            'Register',
+            style: TextStyle(
+                color: Theme.of(this._localContext).primaryColor,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline),
+          ),
+        )
+      ],
+    );
   }
 
-  Container buildLoginButton() {
+  Container buildLoginButton(LoginViewModel model) {
     return Container(
       height: 40.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.greenAccent,
-        color: Colors.green,
+        shadowColor: Colors.orangeAccent,
+        color: Theme.of(_localContext).primaryColor,
         elevation: 7.0,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            model.login(
+                email: _emailController.text,
+                password: _passwordController.text);
+          },
           child: Center(
             child: Text(
               'LOGIN',
@@ -116,7 +138,7 @@ class LoginView extends StatelessWidget {
         child: Text(
           'Forgot Password',
           style: TextStyle(
-              color: Colors.green,
+              color: Theme.of(_localContext).primaryColor,
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
               decoration: TextDecoration.underline),
@@ -127,6 +149,7 @@ class LoginView extends StatelessWidget {
 
   TextField buildPasswordTextField() {
     return TextField(
+      controller: _passwordController,
       decoration: InputDecoration(
           labelText: 'PASSWORD',
           labelStyle: TextStyle(
@@ -141,6 +164,7 @@ class LoginView extends StatelessWidget {
 
   TextField _buildEmailTextField() {
     return TextField(
+      controller: _emailController,
       decoration: InputDecoration(
           labelText: 'EMAIL',
           labelStyle: TextStyle(
@@ -182,33 +206,33 @@ class LoginView extends StatelessWidget {
 
   Container _buildLoginWithGoogle() {
     return Container(
-      height: 40.0,
-      // color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.black, style: BorderStyle.solid, width: 1.0),
-            // color: Colors.transparent,
-            borderRadius: BorderRadius.circular(20.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: ImageIcon(
-                AssetImage('assets/images/google.jpg'),
-                // size:50,
-              // fit:
+        height: 40.0,
+        // color: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.black, style: BorderStyle.solid, width: 1.0),
+              // color: Colors.transparent,
+              borderRadius: BorderRadius.circular(20.0)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: ImageIcon(
+                  AssetImage('assets/images/google.jpg'),
+                  // size:50,
+                  // fit:
+                ),
               ),
-            ),
-            SizedBox(width: 10.0),
-            Center(
-              child: Text('Log in with Google',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontFamily: 'Montserrat')),
-            ),],
-          // ],
-        ),
-      
-    ));
+              SizedBox(width: 10.0),
+              Center(
+                child: Text('Log in with Google',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontFamily: 'Montserrat')),
+              ),
+            ],
+            // ],
+          ),
+        ));
   }
 }

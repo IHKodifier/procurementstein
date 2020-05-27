@@ -10,7 +10,6 @@ class StartupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
     return ViewModelBuilder<StartupViewModel>.reactive(
         builder: (_, model, child) => Scaffold(
               body: Center(
@@ -27,10 +26,8 @@ class StartupView extends StatelessWidget {
                       child: Text('Log out'),
                     ),
                     InputField(
-                      controller: controller,
                       placeholder: null,
                       enterPressed: () {
-                        model.inputString = controller.text;
                       },
                     ),
                   ],
