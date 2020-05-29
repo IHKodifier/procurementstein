@@ -16,9 +16,9 @@ class LoadingSpinner extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[ 
-          SpinKitPouringHourglass(
+          SpinKitThreeBounce(
             color: Colors.white,
-            size: 50,
+            size: 30,
           ),
           // SizedBox(height:10),
           // Text('Loading'),

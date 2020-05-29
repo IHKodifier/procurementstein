@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:procuremenstein/ui/views/home/home_viewmodel.dart';
 import 'package:procuremenstein/ui/views/login/login_view.dart';
 import 'package:procuremenstein/ui/views/startup/startup_viewmodel.dart';
-import 'package:procuremenstein/ui/widgets/input_field.dart';
+import 'package:procuremenstein/ui/shared/input_field.dart';
 import 'package:stacked/stacked.dart';
 
 class StartupView extends StatelessWidget {

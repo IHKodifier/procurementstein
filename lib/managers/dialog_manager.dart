@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:procuremenstein/app/service_locator.dart';
-import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/models/dialog_models.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget child;
@@ -25,30 +25,31 @@ class _DialogManagerState extends State<DialogManager> {
     return widget.child;
   }
 
-  void _showDialog(DialogRequest request) {
-    var isConfirmationDialog = request.cancelTitle != null;
-    showDialog(
+  void _showDialog(AlertRequest request) {
+    Alert(
         context: context,
-        builder: (context) => AlertDialog(
-              title: Text(request.title),
-              content: Text(request.description),
-              actions: <Widget>[
-                // if (isConfirmationDialog)
-                  FlatButton(
-                    child: Text(request.cancelTitle),
-                    onPressed: () {
-                      _dialogService
-                          .dialogComplete(DialogResponse(confirmed: false));
-                    },
-                  ),
-                FlatButton(
-                  child: Text(request.buttonTitle),
-                  onPressed: () {
-                    _dialogService
-                        .dialogComplete(DialogResponse(confirmed: true));
-                  },
-                ),
-              ],
-            ));
+        title: request.title,
+        desc: request.description,
+        closeFunction: () =>
+            _dialogService.dialogComplete(AlertResponse(confirmed: false)),
+        buttons: [
+          DialogButton(
+            width: 150,
+            child: Text(request.buttonTitle,),
+            onPressed: () {
+              _dialogService.dialogComplete(AlertResponse(confirmed: true));
+              Navigator.of(context).pop();
+            },
+          ),
+          DialogButton(
+            width: 150,
+            child: Text(request.buttonTitle,),
+            onPressed: () {
+              _dialogService.dialogComplete(AlertResponse(confirmed: true));
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+        ).show();
   }
 }

@@ -46,11 +46,11 @@ class SignupViewModel extends BaseModel {
     try {
       var loginResult = await _authenticationService.signUpWithEmail(
           email: email, password: password, nickName: nickName);
-      if (loginResult.user != null) {
+      if (loginResult != null ) {
         //user was SUCCESSFULLY CREATED in Firbase
         setBusy(false);
-        _navigationService.navigateTo('HomeViewRoute');
-      } else if (!loginResult) {
+        _navigationService.popAndPush('HomeViewRoute');
+      } else if (loginResult==null) {
         //user was not successfully created
 
       } else {}

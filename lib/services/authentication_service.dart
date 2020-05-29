@@ -2,28 +2,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:procuremenstein/app/service_locator.dart';
+import 'package:procuremenstein/services/dialog_service.dart';
 import '../models/app_user.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
+  DialogService _dialogService = serviceLocator<DialogService>();
 
   Future loginWithEmail({
     @required String email,
     @required String password,
   }) async {
+    var user;
     try {
-      var user = await _firebaseAuthInstance.signInWithEmailAndPassword(
+      user = await _firebaseAuthInstance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      if (user != null) {
-        print('sign in successfull');
-        return (user != null);
-      } else {}
     } catch (e) {
+      print('/n/n/n/n');
+
+      print(e.message);
+      print('\n\n\n im printing IHK error message');
       print(e.message);
       return (e.message);
     }
+    if (user != null) {
+      print('sign in successfull');
+      return (user != null);
+    } else {}
   }
 
   Future<dynamic> signUpWithEmail({
@@ -47,7 +55,13 @@ class AuthenticationService {
       } else
         return false;
     } catch (e) {
-      print(e.toString());
+      _dialogService.showDialog(
+        title: 'Signup Error',
+        description: e.message.toString(),
+      );
+      print('ihk caught an exception \n\n\n\n\n\n\n');
+
+      print(e.message);
     }
   }
 

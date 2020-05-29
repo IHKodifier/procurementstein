@@ -1,77 +1,21 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
+import 'package:procuremenstein/app/service_locator.dart';
+// import 'package:procuremenstein/models/app_user.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
-// import 'package:procuremenstein/bloc/app_user.dart';
-// import 'package:procuremenstein/bloc/authentication_bloc.dart';
+import 'package:procuremenstein/services/navigation_service.dart';
+import 'package:stacked/stacked.dart';
+import 'package:procuremenstein/app/route_paths.dart' as routes;
 
-import 'package:provider/provider.dart';
+class DrawerViewModel extends BaseViewModel {
+  AuthenticationService _authenticationService =
+      serviceLocator<AuthenticationService>();
+  NavigationService _navigationService = serviceLocator<NavigationService>();
+  // AppUser _currenrUser = _authenticationService.currentUser();
 
-class AppDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // var authBloc = Provider.of<AuthenticationService>(context);
-
-    // return _buildDrawer(context,authBloc);
+  void signOut() {
+    _authenticationService.signout();
+    _navigationService.navigateTo(routes.LoginRoute);
   }
 
-  Widget _buildDrawer(BuildContext context, var authBloc) {
-    return Drawer(
-      elevation: 2.0,
-      child: ListView(
-        children: <Widget>[
-          Container(
-            // the decoration below did not produce desired visual look.
-            // decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(150), topLeft: Radius.circular(150)), color: Colors.white),
-            child: new UserAccountsDrawerHeader(
-              // colo
-              // margin: EdgeInsets.all(4.0),
-              currentAccountPicture: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: new CircleAvatar(
-                  backgroundImage: new NetworkImage('http://i.pravatar.cc/300'),
-                ),
-              ),
-              accountName: new Text(authBloc.authenticatedUser.displayName,
-                  style: Theme.of(context).textTheme.headline5
-                  // .copyWith(fontSize: 18, color: Colors.white),
-                  ),
-              accountEmail: new Text(authBloc.authenticatedUser.userName,
-                  style: Theme.of(context).textTheme.subtitle1),
-            ),
-          ),
-          new ListTile(
-            title: new Text('About Page'),
-            onTap: () {
-              // Navigator.of(context).pop();
-              // Navigator.push(
-              //     context,
-              //     new MaterialPageRoute(
-              //         builder: (BuildContext context) => new AboutPage()));
-            },
-          ),
-          // About page
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 32),
-            child: RaisedButton(
-              onPressed: () {
-                // UserManagement().signOut();
-                Navigator.popAndPushNamed(context, '/login');
-              },
-              child: Text('Sign Out'),
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          //login button
-          RaisedButton(
-            child: Text('try another user'),
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-            
-            },
-          ),
-        ],
-      ),
-    );
-  }
+  String _title = 'Home View';
+  String get title => _title;
 }

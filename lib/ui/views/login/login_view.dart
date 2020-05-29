@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:procuremenstein/ui/shared/busy_overlay.dart';
+import 'package:procuremenstein/ui/shared/loding_spinner.dart';
 import 'package:procuremenstein/ui/views/login/login_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,62 +18,65 @@ class LoginView extends StatelessWidget {
   }
 
   Widget _buildScaffold(BuildContext context, LoginViewModel model) {
-    return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                  child: Text('Hello',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.cabin().toString(),
-                          fontSize: 80.0,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
-                  child: Text('There',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.cabin().toString(),
-                          fontSize: 80.0,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(225.0, 155.0, 0.0, 0.0),
-                  child: Text('!',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.cabin().toString(),
-                          fontSize: 100.0,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(_localContext).primaryColor)),
-                )
-              ],
-            ),
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-              child: Column(
+    return BusyOverlay(
+      show: model.isBusy,
+      child: new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              child: Stack(
                 children: <Widget>[
-                  _buildEmailTextField(),
-                  SizedBox(height: 20.0),
-                  buildPasswordTextField(),
-                  SizedBox(height: 5.0),
-                  buildForgotPassword(),
-                  SizedBox(height: 40.0),
-                  buildLoginButton(model),
-                  SizedBox(height: 20.0),
-                  _buildLoginWithFacebook(),
-                  _buildLoginWithGoogle(),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
+                    child: Text('Hello',
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.cabin().toString(),
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
+                    child: Text('There',
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.cabin().toString(),
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(225.0, 155.0, 0.0, 0.0),
+                    child: Text('.',
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.cabin().toString(),
+                            fontSize: 100.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(_localContext).primaryColor)),
+                  )
                 ],
-              )),
-          SizedBox(height: 15.0),
-          _buildNeedToSignUpRow(context, model)
-        ],
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                child: Column(
+                  children: <Widget>[
+                    _buildEmailTextField(),
+                    SizedBox(height: 20.0),
+                    buildPasswordTextField(),
+                    SizedBox(height: 5.0),
+                    buildForgotPassword(),
+                    SizedBox(height: 40.0),
+                    buildLoginButton(model),
+                    SizedBox(height: 20.0),
+                    _buildLoginWithFacebook(),
+                    _buildLoginWithGoogle(),
+                  ],
+                )),
+            SizedBox(height: 15.0),
+            _buildNeedToSignUpRow(context, model)
+          ],
+        ),
       ),
     );
   }
@@ -105,25 +110,29 @@ class LoginView extends StatelessWidget {
   Container buildLoginButton(LoginViewModel model) {
     return Container(
       height: 40.0,
+      width: double.infinity,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
         shadowColor: Colors.orangeAccent,
         color: Theme.of(_localContext).primaryColor,
         elevation: 7.0,
-        child: GestureDetector(
-          onTap: () {
-            model.login(
+        child: RaisedButton(
+          color: Theme.of(_localContext)  .primaryColor,
+          onPressed:  () {
+            model.setBusy(true);
+             model.loginWithEmail(
                 email: _emailController.text,
                 password: _passwordController.text);
           },
-          child: Center(
-            child: Text(
-              'LOGIN',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat'),
-            ),
+           
+          child: model.isBusy? LoadingSpinner():
+
+          Text(
+            'LOGIN',
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat'),
           ),
         ),
       ),

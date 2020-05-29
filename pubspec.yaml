@@ -23,6 +23,7 @@ dependencies:
   google_fonts: 
   # font_aswesome:
   flutter_spinkit: 
+  rflutter_alert: ^1.0.3
 
   # cloud and firebase
   firebase_auth: ^0.16.0

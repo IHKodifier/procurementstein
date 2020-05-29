@@ -1,15 +1,15 @@
-import 'package:procuremenstein/ui/shared/shared_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:procuremenstein/ui/shared/loding_spinner.dart';
 
 /// A button that shows a busy indicator in place of title
 class BusyButton extends StatefulWidget {
-  final bool busy;
+  final bool isBusy;
   final String title;
   final Function onPressed;
   final bool enabled;
   const BusyButton(
       {@required this.title,
-      this.busy = false,
+      this.isBusy = false,
       @required this.onPressed,
       this.enabled = true});
 
@@ -24,25 +24,22 @@ class _BusyButtonState extends State<BusyButton> {
       onTap: widget.onPressed,
       child: InkWell(
         child: AnimatedContainer(
-          height: widget.busy ? 40 : null,
-          width: widget.busy ? 40 : null,
+          height: widget.isBusy ? 40 : null,
+          width: widget.isBusy ? 40 : null,
           duration: const Duration(milliseconds: 300),
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(
-              horizontal: widget.busy ? 10 : 15,
-              vertical: widget.busy ? 10 : 10),
+              horizontal: widget.isBusy ? 10 : 15,
+              vertical: widget.isBusy ? 10 : 10),
           decoration: BoxDecoration(
             color: widget.enabled ? Colors.grey[800] : Colors.grey[300],
             borderRadius: BorderRadius.circular(5),
           ),
-          child: !widget.busy
+          child: !widget.isBusy
               ? Text(
                   widget.title,
-                  style: buttonTitleTextStyle,
                 )
-              : CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+              : LoadingSpinner(),
         ),
       ),
     );

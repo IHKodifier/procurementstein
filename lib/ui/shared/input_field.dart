@@ -109,13 +109,13 @@ class _InputFieldState extends State<InputField> {
             ],
           ),
         ),
-        // if (widget.validationMessage != null)
-        //   NoteText(
-        //     widget.validationMessage,
-        //     color: Colors.red,
-        //   ),
-        // if (widget.additionalNote != null) verticalSpace(5),
-        // if (widget.additionalNote != null) NoteText(widget.additionalNote),
+        if (widget.validationMessage != null)
+          NoteText(
+            widget.validationMessage,
+            color: Colors.red,
+          ),
+        if (widget.additionalNote != null) verticalSpace(5),
+        if (widget.additionalNote != null) NoteText(widget.additionalNote),
         verticalSpaceSmall
       ],
     );

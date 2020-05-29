@@ -10,21 +10,23 @@ import 'package:procuremenstein/app/base_model.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 
 class LoginViewModel extends BaseModel {
+  //all services needed
   final AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
   final DialogService _dialogService = serviceLocator<DialogService>();
   final NavigationService _navigationService =
       serviceLocator<NavigationService>();
 
-  Future login({@required String email, @required String password}) async {
+//attempts to login a user into app , returns a [true] if successfull or [false] otherwise
+  Future loginWithEmail(
+      {@required String email, @required String password}) async {
     setBusy(true);
     var result = await _authenticationService.loginWithEmail(
         email: email, password: password);
     setBusy(false);
-// var authResult = AuthResult
     if (result is bool) {
       if (result) {
-        _navigationService.navigateTo('HomeViewRoute');
+        _navigationService.popAndPush('HomeViewRoute');
       } else {
         await _dialogService.showDialog(
           title: 'Login Failure',

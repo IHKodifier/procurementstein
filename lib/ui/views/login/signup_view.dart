@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:procuremenstein/ui/shared/busy_overlay.dart';
 import 'package:procuremenstein/ui/shared/loding_spinner.dart';
 import 'package:procuremenstein/ui/views/login/signup_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -18,31 +19,34 @@ class SignupView extends StatelessWidget {
 
   Widget _buildSingleChildScrollView(
       BuildContext context, SignupViewModel model) {
-    return new Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            height: 100,
-            child: _buildStack(),
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-              child: Column(
-                children: <Widget>[
-                  _buildEmailTextField(),
-                  SizedBox(height: 10.0),
-                  _buildPasswordTextField(),
-                  SizedBox(height: 10.0),
-                  _buildNickNameTextField(),
-                  SizedBox(height: 50.0),
-                  _buildSignUpButton(context, model),
-                  SizedBox(height: 20.0),
-                  _buildGoBackButton(context),
-                ],
-              )),
-        ],
+    return BusyOverlay(
+          show: model.isBusy,
+          child: new Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 100,
+              child: _buildStack(),
+            ),
+            Container(
+                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                child: Column(
+                  children: <Widget>[
+                    _buildEmailTextField(),
+                    SizedBox(height: 10.0),
+                    _buildPasswordTextField(),
+                    SizedBox(height: 10.0),
+                    _buildNickNameTextField(),
+                    SizedBox(height: 50.0),
+                    _buildSignUpButton(context, model),
+                    SizedBox(height: 20.0),
+                    _buildGoBackButton(context),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -88,7 +92,7 @@ class SignupView extends StatelessWidget {
             }, 
           elevation: 7.0,
           child:  Center(
-              child: model.busy
+              child: model.isBusy
                   ? LoadingSpinner()
                   : Text(
                       'SIGNUP',
