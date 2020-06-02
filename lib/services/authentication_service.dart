@@ -9,6 +9,7 @@ import '../models/app_user.dart';
 class AuthenticationService {
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
   DialogService _dialogService = serviceLocator<DialogService>();
+  var currentUser;
 
   Future loginWithEmail({
     @required String email,
@@ -37,7 +38,7 @@ class AuthenticationService {
   Future<dynamic> signUpWithEmail({
     @required String email,
     @required String password,
-    @required String nickName,
+    @required var userData,
   }) async {
     var authResult;
     try {
@@ -49,7 +50,7 @@ class AuthenticationService {
         print('\n\n\n Fireuser created \n\n\n');
 
         //create an [AppUser]
-        await createAppUser(authResult, nickName);
+        await createAppUser(authResult, userData);
         print('\n\n\n\n app user created\n\n\n');
         return authResult;
       } else
@@ -59,7 +60,7 @@ class AuthenticationService {
         title: 'Signup Error',
         description: e.message.toString(),
       );
-      print('ihk caught an exception \n\n\n\n\n\n\n');
+      print('\t \t ihk caught an exception \n\n\n\n\n\n\n');
 
       print(e.message);
     }
@@ -74,15 +75,19 @@ class AuthenticationService {
     }
   }
 
-  Future<bool> createAppUser(AuthResult authResult, String nickName) async {
+//create all user profile data  here to save to users collection
+  _buildUserMap(AuthResult authResult, var userData) {
+    userData['email'] = authResult.user.email;
+    userData['uid'] = authResult.user.uid;
+    userData['creeatedBy'] = 'debugAdmin';
+    userData['version'] = 'ViewModelBuiler2.2';
+    userData['photoUrl'] = 'http://i.pravatar.cc/300';
+  }
+
+  Future<bool> createAppUser(AuthResult authResult, var userData) async {
+    _buildUserMap(authResult, userData);
     try {
-      Firestore.instance.collection('/users').add({
-        'email': authResult.user.email,
-        'uid': authResult.user.uid,
-        'roles': 'buyer,seller',
-        'nickName': nickName,
-        'createdBy': 'debugAdmin',
-      }).then((value) {
+      Firestore.instance.collection('/users').add(userData).then((value) {
         print('\n\n\n App User createdin firestore\n\n\n');
         if (value != null) {
           return true;

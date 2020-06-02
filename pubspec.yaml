@@ -24,6 +24,7 @@ dependencies:
   # font_aswesome:
   flutter_spinkit: 
   rflutter_alert: ^1.0.3
+  font_awesome_flutter: ^8.8.1
 
   # cloud and firebase
   firebase_auth: ^0.16.0

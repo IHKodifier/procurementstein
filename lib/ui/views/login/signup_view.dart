@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:procuremenstein/ui/shared/busy_overlay.dart';
 import 'package:procuremenstein/ui/shared/loding_spinner.dart';
 import 'package:procuremenstein/ui/views/login/signup_viewmodel.dart';
@@ -7,7 +8,10 @@ import 'package:stacked/stacked.dart';
 class SignupView extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _nickNameController = TextEditingController();
+  TextEditingController _profileTitleController = TextEditingController();
+Map<String,dynamic> userData=Map<String,dynamic>();
+
+//handles the user related additional data 
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +24,8 @@ class SignupView extends StatelessWidget {
   Widget _buildSingleChildScrollView(
       BuildContext context, SignupViewModel model) {
     return BusyOverlay(
-          show: model.isBusy,
-          child: new Scaffold(
+      show: model.isBusy,
+      child: new Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -38,7 +42,9 @@ class SignupView extends StatelessWidget {
                     SizedBox(height: 10.0),
                     _buildPasswordTextField(),
                     SizedBox(height: 10.0),
-                    _buildNickNameTextField(),
+                    _buildToggleButtonsContainer(context, model),
+                    SizedBox(height: 10.0),
+                    _buildprofileTitleTextField(),
                     SizedBox(height: 50.0),
                     _buildSignUpButton(context, model),
                     SizedBox(height: 20.0),
@@ -75,40 +81,41 @@ class SignupView extends StatelessWidget {
     );
   }
 
-  Container _buildSignUpButton(BuildContext context,SignupViewModel model) {
+  Container _buildSignUpButton(BuildContext context, SignupViewModel model) {
     return Container(
-        // decoration: BoxDecoration(
-        //   borderRadius: BorderRadius.circular(20.0),
-        // ),
-        height: 40.0,
-        child: RaisedButton(
-          // shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          color: Theme.of(context).primaryColor,
-          onPressed:() {
-              // setbu
-              model.setBusy(true);
-              model.signupWithEmil(_emailController.text,
-                  _passwordController.text, _nickNameController.text);
-            }, 
-          elevation: 7.0,
-          child:  Center(
-              child: model.isBusy
-                  ? LoadingSpinner()
-                  : Text(
-                      'SIGNUP',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-            ),
-          ),
-        );
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(20.0),
+      // ),
+      height: 40.0,
+      child: RaisedButton(
+        // shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        color: Theme.of(context).primaryColor,
+        onPressed: () {
+          // setbu
+          model.setBusy(true);
+          userData['profileTitle']=_profileTitleController.text;
+          model.signupWithEmil(_emailController.text, _passwordController.text,
+               userData);
+        },
+        elevation: 7.0,
+        child: Center(
+          child: model.isBusy
+              ? LoadingSpinner()
+              : Text(
+                  'SIGNUP',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
+                ),
+        ),
+      ),
+    );
   }
 
-  TextField _buildNickNameTextField() {
+  TextField _buildprofileTitleTextField() {
     return TextField(
-      controller: _nickNameController,
+      controller: _profileTitleController,
       decoration: InputDecoration(
           labelText: 'NICK NAME ',
           labelStyle: TextStyle(
@@ -148,6 +155,82 @@ class SignupView extends StatelessWidget {
           // hintStyle: ,
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.green))),
+    );
+  }
+
+  Widget _buildToggleButtonsContainer(
+      BuildContext context, SignupViewModel model) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'I am a  potential ',
+                style: Theme.of(context).textTheme.headline5,
+              )
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildToggleButtons(context, model),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  ToggleButtons _buildToggleButtons(
+      BuildContext context, SignupViewModel model) {
+    return ToggleButtons(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            children: [
+              Text(
+                'Buyer',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              FaIcon(
+                FontAwesomeIcons.cartArrowDown,
+                size: 50,
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            children: [
+              Text(
+                'Seller',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              FaIcon(FontAwesomeIcons.truck, size: 45),
+            ],
+          ),
+        ),
+      ],
+      isSelected: model.roleSelectionValues,
+      onPressed: (index) {
+        bool value = model.roleSelectionValues[index];
+        model.setToggleButtonSelectionValueAt(!value, index);
+        // model.selectedRole = model.roles[index];
+      },
+      selectedColor: Theme.of(context).primaryColor,
+      color: Colors.black,
+      renderBorder: false,
+      // fillColor: Colors.deepPurple,
+      splashColor: Colors.deepOrange,
     );
   }
 

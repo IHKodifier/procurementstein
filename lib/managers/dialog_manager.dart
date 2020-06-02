@@ -41,14 +41,7 @@ class _DialogManagerState extends State<DialogManager> {
               Navigator.of(context).pop();
             },
           ),
-          DialogButton(
-            width: 150,
-            child: Text(request.buttonTitle,),
-            onPressed: () {
-              _dialogService.dialogComplete(AlertResponse(confirmed: true));
-              Navigator.of(context).pop();
-            },
-          ),
+         
         ],
         ).show();
   }
