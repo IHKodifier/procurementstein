@@ -10,6 +10,8 @@ class DrawerViewModel extends BaseViewModel {
       serviceLocator<AuthenticationService>();
   NavigationService _navigationService = serviceLocator<NavigationService>();
   // AppUser _currenrUser = _authenticationService.currentUser();
+  dynamic get currentUser=>_authenticationService.currentUser;
+
 
   void signOut() {
     _authenticationService.signout();

@@ -9,7 +9,7 @@ import '../models/app_user.dart';
 class AuthenticationService {
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
   DialogService _dialogService = serviceLocator<DialogService>();
-  var currentUser;
+  AuthResult currentUser;
 
   Future loginWithEmail({
     @required String email,
@@ -23,14 +23,16 @@ class AuthenticationService {
       );
     } catch (e) {
       print('/n/n/n/n');
-
       print(e.message);
       print('\n\n\n im printing IHK error message');
       print(e.message);
       return (e.message);
     }
+
     if (user != null) {
       print('sign in successfull');
+      //set the logged in user as current user across the app
+      currentUser = user;
       return (user != null);
     } else {}
   }
