@@ -44,7 +44,7 @@ Map<String,dynamic> userData=Map<String,dynamic>();
                     SizedBox(height: 10.0),
                     _buildToggleButtonsContainer(context, model),
                     SizedBox(height: 10.0),
-                    _buildprofileTitleTextField(),
+                    _buildProfileTitleTextField(),
                     SizedBox(height: 50.0),
                     _buildSignUpButton(context, model),
                     SizedBox(height: 20.0),
@@ -113,11 +113,11 @@ Map<String,dynamic> userData=Map<String,dynamic>();
     );
   }
 
-  TextField _buildprofileTitleTextField() {
+  TextField _buildProfileTitleTextField() {
     return TextField(
       controller: _profileTitleController,
       decoration: InputDecoration(
-          labelText: 'NICK NAME ',
+          labelText: 'PROFILE TITLE ',
           labelStyle: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,

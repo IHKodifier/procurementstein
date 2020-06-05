@@ -17,8 +17,12 @@ class AppDrawer extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             _buildUserAccountsDrawerHeader(context, model),
-            _buildAboutTile(),
-            _buildSignOut(context),
+            _buildBuildProfile(model),
+            Divider(),
+            _buildAboutTile(model),
+            Divider(),
+            _buildSettingsTile(model),
+            _buildSignOut(context, model),
           ],
         ),
       ),
@@ -27,6 +31,7 @@ class AppDrawer extends StatelessWidget {
 
   UserAccountsDrawerHeader _buildUserAccountsDrawerHeader(
       BuildContext context, DrawerViewModel model) {
+    model.currentUser;
     return new UserAccountsDrawerHeader(
       // colo
       // margin: EdgeInsets.all(4.0),
@@ -40,14 +45,14 @@ class AppDrawer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: new CircleAvatar(
-        backgroundImage: new NetworkImage('http://i.pravatar.cc/306'),
+        backgroundImage: NetworkImage(model.currentUser['photoUrl']),
       ),
     );
   }
 
   Text _buildAccountName(BuildContext context, DrawerViewModel model) {
     return new Text(
-      'Asad Nouman Durrani ',
+      model.currentUser['email'],
       style: Theme.of(context)
           .textTheme
           .title
@@ -56,28 +61,43 @@ class AppDrawer extends StatelessWidget {
   }
 
   Text _buildAccountEmail(DrawerViewModel model) =>
-      Text(model.currentUser.user.email);
+      Text(model.currentUser['version']);
 
-  ListTile _buildAboutTile() {
+  ListTile _buildAboutTile(DrawerViewModel model) {
     return new ListTile(
-      title: new Text('About Page'),
+      title: new Text('About this app'),
       onTap: () {
-        // Navigator.of(context).pop();
-        // Navigator.push(
-        //     context,
-        //     new MaterialPageRoute(
-        //         builder: (BuildContext context) => new AboutPage()));
+        model.showDialogFeatureNotReady();
       },
     );
   }
 
-  Padding _buildSignOut(BuildContext context) {
+  ListTile _buildBuildProfile(DrawerViewModel model) {
+    return new ListTile(
+      title: new Text('Your Profile'),
+      trailing: Icon(Icons.edit),
+      onTap: () {
+        model.showDialogFeatureNotReady();
+      },
+    );
+  }
+  
+  ListTile _buildSettingsTile(DrawerViewModel model) {
+    return new ListTile(
+      title: new Text('settings'),
+      trailing: Icon(Icons.settings),
+      onTap: () {
+        model.showDialogFeatureNotReady();
+      },
+    );
+  }
+
+  Padding _buildSignOut(BuildContext context, DrawerViewModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 32),
       child: RaisedButton(
         onPressed: () {
-          // UserManagement().signOut();
-          Navigator.popAndPushNamed(context, '/login');
+          model.signOut();
         },
         child: Text('Sign Out'),
         color: Theme.of(context).primaryColor,
