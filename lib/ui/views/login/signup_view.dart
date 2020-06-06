@@ -9,9 +9,9 @@ class SignupView extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _profileTitleController = TextEditingController();
-Map<String,dynamic> userData=Map<String,dynamic>();
+  Map<String, dynamic> userData = Map<String, dynamic>();
 
-//handles the user related additional data 
+//handles the user related additional data
 
   @override
   Widget build(BuildContext context) {
@@ -26,32 +26,35 @@ Map<String,dynamic> userData=Map<String,dynamic>();
     return BusyOverlay(
       show: model.isBusy,
       child: new Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              height: 100,
-              child: _buildStack(),
-            ),
-            Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-                child: Column(
-                  children: <Widget>[
-                    _buildEmailTextField(),
-                    SizedBox(height: 10.0),
-                    _buildPasswordTextField(),
-                    SizedBox(height: 10.0),
-                    _buildToggleButtonsContainer(context, model),
-                    SizedBox(height: 10.0),
-                    _buildProfileTitleTextField(),
-                    SizedBox(height: 50.0),
-                    _buildSignUpButton(context, model),
-                    SizedBox(height: 20.0),
-                    _buildGoBackButton(context),
-                  ],
-                )),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: 100,
+                child: _buildStack(),
+              ),
+              Container(
+                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      _buildEmailTextField(context),
+                      SizedBox(height: 10.0),
+                      _buildPasswordTextField(context),
+                      SizedBox(height: 10.0),
+                      _buildToggleButtonsContainer(context, model),
+                      SizedBox(height: 10.0),
+                      _buildProfileTitleTextField(context),
+                      SizedBox(height: 50.0),
+                      _buildSignUpButton(context, model),
+                      SizedBox(height: 20.0),
+                      _buildGoBackButton(context),
+                      SizedBox(height: 20.0),
+                    ],
+                  )),
+            ],
+          ),
         ),
       ),
     );
@@ -93,9 +96,9 @@ Map<String,dynamic> userData=Map<String,dynamic>();
         onPressed: () {
           // setbu
           model.setBusy(true);
-          userData['profileTitle']=_profileTitleController.text;
-          model.signupWithEmil(_emailController.text, _passwordController.text,
-               userData);
+          userData['profileTitle'] = _profileTitleController.text;
+          model.signupWithEmil(
+              _emailController.text, _passwordController.text, userData);
         },
         elevation: 7.0,
         child: Center(
@@ -113,7 +116,7 @@ Map<String,dynamic> userData=Map<String,dynamic>();
     );
   }
 
-  TextField _buildProfileTitleTextField() {
+  TextField _buildProfileTitleTextField(BuildContext context) {
     return TextField(
       controller: _profileTitleController,
       decoration: InputDecoration(
@@ -123,11 +126,11 @@ Map<String,dynamic> userData=Map<String,dynamic>();
               fontWeight: FontWeight.bold,
               color: Colors.grey),
           focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green))),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
     );
   }
 
-  TextField _buildPasswordTextField() {
+  TextField _buildPasswordTextField(BuildContext context) {
     return TextField(
       controller: _passwordController,
       decoration: InputDecoration(
@@ -137,12 +140,12 @@ Map<String,dynamic> userData=Map<String,dynamic>();
               fontWeight: FontWeight.bold,
               color: Colors.grey),
           focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green))),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
       obscureText: true,
     );
   }
 
-  TextField _buildEmailTextField() {
+  TextField _buildEmailTextField(BuildContext context) {
     return TextField(
       controller: _emailController,
       decoration: InputDecoration(
@@ -154,7 +157,7 @@ Map<String,dynamic> userData=Map<String,dynamic>();
           // hintText: 'EMAIL',
           // hintStyle: ,
           focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green))),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
     );
   }
 

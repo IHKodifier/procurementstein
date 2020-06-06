@@ -40,7 +40,18 @@ class LoginViewModel extends BaseModel {
       );
     }
   }
-
+ Future showDialogFeatureNotReady() async {
+    print('dialog called');
+    var dialogResult = await _dialogService.showDialog(
+      title: 'Feature not ready yet!!',
+      description: 'Come back some time later to enjoy this feature',
+    );
+    if (dialogResult.confirmed) {
+      print('User has confirmed');
+    } else {
+      print('User cancelled the dialog');
+    }
+  }
   void navigateToSignup() {
     _navigationService.navigateTo(routes.SignUPViewRoute);
   }
