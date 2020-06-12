@@ -23,6 +23,8 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             _buildAboutTile(model),
             Divider(),
+            _buildProfileTypeTile(model),
+            Divider(),
             _buildSignOut(context, model),
           ],
         ),
@@ -62,7 +64,7 @@ class AppDrawer extends StatelessWidget {
   }
 
   Text _buildAccountEmail(DrawerViewModel model) =>
-      Text(model.currentUser['version']);
+      Text(model.currentUser['profileTitle']);
 
   ListTile _buildAboutTile(DrawerViewModel model) {
     return new ListTile(
@@ -82,11 +84,21 @@ class AppDrawer extends StatelessWidget {
       },
     );
   }
-  
+
   ListTile _buildSettingsTile(DrawerViewModel model) {
     return new ListTile(
-      title: new Text('settings'),
+      title: new Text('Settings'),
       trailing: Icon(Icons.settings),
+      onTap: () {
+        model.showDialogFeatureNotReady();
+      },
+    );
+  }
+
+  ListTile _buildProfileTypeTile(DrawerViewModel model) {
+    return new ListTile(
+      title: new Text('Profile Type = ${model.currentUser['profileType']}'),
+      trailing: Icon(Icons.account_box),
       onTap: () {
         model.showDialogFeatureNotReady();
       },

@@ -40,6 +40,7 @@ class LoginViewModel extends BaseModel {
       );
     }
   }
+ 
  Future showDialogFeatureNotReady() async {
     print('dialog called');
     var dialogResult = await _dialogService.showDialog(
@@ -52,6 +53,7 @@ class LoginViewModel extends BaseModel {
       print('User cancelled the dialog');
     }
   }
+ 
   void navigateToSignup() {
     _navigationService.navigateTo(routes.SignUPViewRoute);
   }

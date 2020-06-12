@@ -33,8 +33,8 @@ class AuthenticationService {
       print('sign in successfull');
       //get the user from [users] collection firestore
 
-      var returnvalue =await  getFireStoreUser(authResult.user.uid);
-  
+      var returnvalue = await getFireStoreUser(authResult.user.uid);
+
       //set the logged in user as current user across the app
       currentUser = returnvalue.documents[0].data;
       return (authResult != null);
@@ -61,11 +61,15 @@ class AuthenticationService {
       );
       if (authResult.user != null) {
         print('\n\n\n Fireuser created \n\n\n');
+        print(authResult.user.uid);
 
         //create an [AppUser]
-        await createAppUser(authResult, userData);
-        print('\n\n\n\n app user created\n\n\n');
-        return authResult;
+        var createResult = await createAppUser(authResult, userData);
+        if (createResult != null) {
+          print('\n\n\n\n app user created\n\n\n');
+          print(createResult);
+          return authResult;
+        }
       } else
         return false;
     } catch (e) {
