@@ -3,13 +3,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:procuremenstein/app/service_locator.dart';
+import 'package:procuremenstein/services/console_utility.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import '../models/app_user.dart';
+import 'package:procuremenstein/services/console_utility.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
   DialogService _dialogService = serviceLocator<DialogService>();
-  dynamic currentUser;
+  dynamic currentUserProfile;
 
   Future loginWithEmail({
     @required String email,
@@ -22,30 +24,37 @@ class AuthenticationService {
         password: password,
       );
     } catch (e) {
-      print('/n/n/n/n');
-      print(e.message);
-      print('\n\n\n im printing IHK error message');
-      print(e.message);
+      ConsoleUtility.printToConsole(e.message);
+
       return (e.message);
     }
 
     if (authResult != null) {
-      print('sign in successfull');
-      //get the user from [users] collection firestore
-
-      var returnvalue = await getFireStoreUser(authResult.user.uid);
-
+      ConsoleUtility.printToConsole('sign in successfull');
+      //get the user from [users] collection firestore &
       //set the logged in user as current user across the app
-      currentUser = returnvalue.documents[0].data;
+      setCurrentUser(authResult.user.uid);
+
       return (authResult != null);
     } else {}
   }
 
   Future<QuerySnapshot> getFireStoreUser(String uid) async {
     return Firestore.instance
-        .collection('/users')
+        .collection('/userProfiles')
         .where('uid', isEqualTo: uid)
         .getDocuments();
+  }
+
+  Future<bool> setCurrentUser(String uid) async {
+    try {
+      var returnvalue = await getFireStoreUser(uid);
+      currentUserProfile = returnvalue.documents[0].data;
+    } catch (e) {
+      _dialogService.showDialog(title: e.message);
+      return false;
+    }
+    return true;
   }
 
   Future<dynamic> signUpWithEmail({
@@ -60,14 +69,14 @@ class AuthenticationService {
         password: password,
       );
       if (authResult.user != null) {
-        print('\n\n\n Fireuser created \n\n\n');
-        print(authResult.user.uid);
+        ConsoleUtility.printToConsole(
+            ' Fireuser created \n\n user id = ${authResult.user.uid}');
 
         //create an [AppUser]
         var createResult = await createAppUser(authResult, userData);
         if (createResult != null) {
-          print('\n\n\n\n app user created\n\n\n');
-          print(createResult);
+          ConsoleUtility.printToConsole(' app user created');
+          ConsoleUtility.printToConsole(createResult.toString());
           return authResult;
         }
       } else
@@ -77,45 +86,46 @@ class AuthenticationService {
         title: 'Signup Error',
         description: e.message.toString(),
       );
-      print('\t \t ihk caught an exception \n\n\n\n\n\n\n');
-
-      print(e.message);
+      ConsoleUtility.printToConsole(' ihk caught an exception \n${e.message}');
     }
   }
 
   Future signout() async {
     try {
       await _firebaseAuthInstance.signOut();
-      print('logged out of FireBase');
+      ConsoleUtility.printToConsole('logged out of FireBase');
     } catch (e) {
-      print(e.message);
+      ConsoleUtility.printToConsole(e.message);
     }
   }
 
-//create all user profile data  here to save to users collection
-  _buildUserMap(AuthResult authResult, var userData) {
-    userData['email'] = authResult.user.email;
-    userData['uid'] = authResult.user.uid;
-    userData['creeatedBy'] = 'debugAdmin';
-    userData['version'] = 'ViewModelBuiler2.2';
-    userData['photoUrl'] = 'http://i.pravatar.cc/300';
+//create all user profile data here to save to [userProfiles] collection
+  _buildUserProfileMap(AuthResult authResult, var userProfileData) {
+    userProfileData['email'] = authResult.user.email;
+    userProfileData['uid'] = authResult.user.uid;
+    userProfileData['creeatedBy'] = 'debugAdmin';
+    userProfileData['version'] = 'ViewModelBuiler2.2';
+    userProfileData['photoUrl'] = 'http://i.pravatar.cc/300';
   }
 
-  Future<bool> createAppUser(AuthResult authResult, var userData) async {
-    _buildUserMap(authResult, userData);
+  Future<bool> createAppUser(AuthResult authResult, var userProfileData) async {
+    _buildUserProfileMap(authResult, userProfileData);
     try {
-      Firestore.instance.collection('/users').add(userData).then((value) {
-        print('\n\n\n App User createdin firestore\n\n\n');
+      Firestore.instance
+          .collection('/userProfiles')
+          .add(userProfileData)
+          .then((value) {
+        ConsoleUtility.printToConsole(' UserProfile  created in firestore');
         if (value != null) {
           return true;
         } else {
           return false;
         }
       }).catchError((e) {
-        print('error encountered: ${e.toString()}');
+        ConsoleUtility.printToConsole('error encountered: ${e.toString()}');
       });
     } catch (e) {
-      print(e.message);
+      ConsoleUtility.printToConsole(e.message);
     }
   }
 }

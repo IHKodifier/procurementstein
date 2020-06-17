@@ -77,7 +77,7 @@ class AppDrawer extends StatelessWidget {
 
   ListTile _buildBuildProfile(DrawerViewModel model) {
     return new ListTile(
-      title: new Text('Your Profile'),
+      title: new Text('Profile'),
       trailing: Icon(Icons.edit),
       onTap: () {
         model.showDialogFeatureNotReady();

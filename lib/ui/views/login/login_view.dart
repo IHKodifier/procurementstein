@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:procuremenstein/ui/shared/busy_overlay.dart';
+import 'package:procuremenstein/ui/shared/busy_overlayBuilder.dart';
 import 'package:procuremenstein/ui/shared/loding_spinner.dart';
 import 'package:procuremenstein/ui/views/login/login_viewmodel.dart';
-import 'package:procuremenstein/ui/views/login/signup_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginView extends StatelessWidget {
@@ -15,13 +15,14 @@ class LoginView extends StatelessWidget {
     this._localContext = context;
     return ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(),
-        builder: (context, model, child) => _buildScaffold(context, model));
+        builder: (context, model, child) => _buildLoginScaffold(context, model));
   }
 
-  Widget _buildScaffold(BuildContext context, LoginViewModel model) {
-    return BusyOverlay(
-      show: model.isBusy,
-      child: Scaffold(
+  Widget _buildLoginScaffold(BuildContext context, LoginViewModel model) {
+    return BusyOverlayBuilder(
+          title: 'Loading',
+          busyValue: model.isBusy,
+          childWhenIdle: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

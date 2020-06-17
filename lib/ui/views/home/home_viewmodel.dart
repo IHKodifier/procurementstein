@@ -1,6 +1,7 @@
 import 'package:procuremenstein/app/service_locator.dart';
 // import 'package:procuremenstein/models/app_user.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
+import 'package:procuremenstein/services/console_utility.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
@@ -18,15 +19,15 @@ class HomeViewModel extends BaseViewModel {
     _navigationService.navigateTo(routes.LoginRoute);
   }
 Future showDialog() async {
-    print('dialog called');
+    ConsoleUtility.printToConsole('dialog called');
     var dialogResult = await _dialogService.showDialog(
       title: 'Loggin Successfull',
       description: 'FilledStacks architecture rocks',
     );
     if (dialogResult.confirmed) {
-      print('User has confirmed');
+      ConsoleUtility.printToConsole('User has confirmed');
     } else {
-      print('User cancelled the dialog');
+      ConsoleUtility.printToConsole('User cancelled the dialog');
     }
   }
 

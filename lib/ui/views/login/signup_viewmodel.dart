@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/app/base_model.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
+import 'package:procuremenstein/services/console_utility.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
 
@@ -19,7 +20,7 @@ class SignupViewModel extends BaseModel {
 
   //role handling
   String selectedRole;
-  List<String> roles = ['buyer', 'seller'];
+  List<String> roles = ['Buyer', 'Seller'];
 //user info and profile data
   Map<String, dynamic> userData;
 
@@ -87,7 +88,7 @@ class SignupViewModel extends BaseModel {
       }
     } catch (e) {
       setBusy(false);
-      print(e.toString());
+      ConsoleUtility.printToConsole(e.toString());
     }
   }
 }
