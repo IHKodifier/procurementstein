@@ -3,26 +3,33 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:procuremenstein/ui/shared/busy_overlay.dart';
 import 'package:procuremenstein/ui/shared/busy_overlayBuilder.dart';
 import 'package:procuremenstein/ui/shared/loding_spinner.dart';
+import 'package:procuremenstein/ui/views/home/home_view.dart';
 import 'package:procuremenstein/ui/views/login/login_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginView extends StatelessWidget {
+  //text controllers and fields
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   BuildContext _localContext;
+
   @override
   Widget build(BuildContext context) {
     this._localContext = context;
     return ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(),
-        builder: (context, model, child) => _buildLoginScaffold(context, model));
+        builder: (context, model, child) => model.handleStartupLogin(
+            context: context,
+            model: model,
+            childWhenAuthetnticated: HomeView(),
+            childWhenNotAuthenticated: _buildLoginScaffold(context, model)));
   }
 
   Widget _buildLoginScaffold(BuildContext context, LoginViewModel model) {
     return BusyOverlayBuilder(
-          title: 'Loading',
-          busyValue: model.isBusy,
-          childWhenIdle: Scaffold(
+      title: 'Loading',
+      busyValue: model.isBusy,
+      childWhenIdle: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,6 +12,8 @@ class AuthenticationService {
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
   DialogService _dialogService = serviceLocator<DialogService>();
   dynamic currentUserProfile;
+  Stream<FirebaseUser> authenticationStateStream =
+      FirebaseAuth.instance.onAuthStateChanged;
 
   Future loginWithEmail({
     @required String email,
@@ -31,24 +33,24 @@ class AuthenticationService {
 
     if (authResult != null) {
       ConsoleUtility.printToConsole('sign in successfull');
-      //get the user from [users] collection firestore &
+      //get the user from [userProfiles] collection in firestore &
       //set the logged in user as current user across the app
-      setCurrentUser(authResult.user.uid);
+      setAuthenticatedUser(authResult.user.uid);
 
       return (authResult != null);
     } else {}
   }
 
-  Future<QuerySnapshot> getFireStoreUser(String uid) async {
+  Future<QuerySnapshot> getUserProfile(String uid) async {
     return Firestore.instance
         .collection('/userProfiles')
         .where('uid', isEqualTo: uid)
         .getDocuments();
   }
 
-  Future<bool> setCurrentUser(String uid) async {
+  Future<bool> setAuthenticatedUser(String uid) async {
     try {
-      var returnvalue = await getFireStoreUser(uid);
+      var returnvalue = await getUserProfile(uid);
       currentUserProfile = returnvalue.documents[0].data;
     } catch (e) {
       _dialogService.showDialog(title: e.message);
@@ -72,8 +74,8 @@ class AuthenticationService {
         ConsoleUtility.printToConsole(
             ' Fireuser created \n\n user id = ${authResult.user.uid}');
 
-        //create an [AppUser]
-        var createResult = await createAppUser(authResult, userData);
+        //create a [userProfile] for this user
+        var createResult = await createUserProfile(authResult, userData);
         if (createResult != null) {
           ConsoleUtility.printToConsole(' app user created');
           ConsoleUtility.printToConsole(createResult.toString());
@@ -108,7 +110,7 @@ class AuthenticationService {
     userProfileData['photoUrl'] = 'http://i.pravatar.cc/300';
   }
 
-  Future<bool> createAppUser(AuthResult authResult, var userProfileData) async {
+  Future<bool> createUserProfile(AuthResult authResult, var userProfileData) async {
     _buildUserProfileMap(authResult, userProfileData);
     try {
       Firestore.instance
@@ -128,4 +130,8 @@ class AuthenticationService {
       ConsoleUtility.printToConsole(e.message);
     }
   }
+  // Future<FireBaseUser> getFireUser=>_firebaseAuthInstance.c
+
+  Map<String, dynamic> getCurrentUser() => currentUserProfile!=null?
+  currentUserProfile:null;
 }

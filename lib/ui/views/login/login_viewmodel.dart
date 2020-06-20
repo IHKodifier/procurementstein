@@ -9,6 +9,8 @@ import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/app/base_model.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
+import 'package:procuremenstein/ui/views/home/home_view.dart';
+import 'package:procuremenstein/ui/views/login/login_view.dart';
 
 class LoginViewModel extends BaseModel {
   //all services needed
@@ -17,6 +19,8 @@ class LoginViewModel extends BaseModel {
   final DialogService _dialogService = serviceLocator<DialogService>();
   final NavigationService _navigationService =
       serviceLocator<NavigationService>();
+
+  getCurrentUser() => _authenticationService.getCurrentUser();
 
 //attempts to login a user into app , returns a [true] if successfull or [false] otherwise
   Future loginWithEmail(
@@ -41,8 +45,8 @@ class LoginViewModel extends BaseModel {
       );
     }
   }
- 
- Future showDialogFeatureNotReady() async {
+
+  Future showDialogFeatureNotReady() async {
     ConsoleUtility.printToConsole('dialog called');
     var dialogResult = await _dialogService.showDialog(
       title: 'Feature not ready yet!!',
@@ -54,8 +58,63 @@ class LoginViewModel extends BaseModel {
       ConsoleUtility.printToConsole('User cancelled the dialog');
     }
   }
- 
+
   void navigateToSignup() {
     _navigationService.navigateTo(routes.SignUPViewRoute);
+  }
+
+  Widget handleStartupLogin({
+    BuildContext context,
+    // {context,
+    LoginViewModel model,
+    Widget childWhenAuthetnticated,
+    Widget childWhenNotAuthenticated,
+  }) {
+    setBusy(true);
+    return StreamBuilder(
+        stream: _authenticationService.authenticationStateStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            setBusy(false);
+            //todo set global userProfile
+            _authenticationService.setAuthenticatedUser(snapshot.data.uid);
+            return childWhenAuthetnticated;
+          } else {
+            setBusy(false);
+            return childWhenNotAuthenticated;
+          }
+        });
+
+    return StreamBuilder(
+      stream: _authenticationService.authenticationStateStream,
+      // initialData: initialData ,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          model.setCurrentUser(snapshot.data.uid);
+          notifyListeners();
+          return Container(
+            height: 0,
+            width: 0,
+          );
+        } else {
+          model.nullifyCurrentUser();
+          notifyListeners();
+          return Container(
+            height: 0,
+            width: 0,
+          );
+        }
+      },
+    );
+  }
+
+  //set the global currentUser in [AuthenticationService]
+  Future setCurrentUser(String uid) async {
+    return await _authenticationService.setAuthenticatedUser(uid);
+  }
+
+  void nullifyCurrentUser() {
+    _authenticationService.currentUserProfile = null;
+    notifyListeners();
   }
 }
