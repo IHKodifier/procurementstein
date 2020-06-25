@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 // import 'package:procuremenstein/models/app_user.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
@@ -39,5 +40,27 @@ class DrawerViewModel extends BaseViewModel {
     _navigationService.navigateTo(routes.LoginRoute);
     // FirebaseUser fireuser;
     // fireuser.uid
+  }
+
+  Widget toggleRole(BuildContext context) {
+    List<String> roles = _authenticationService.getUserRoles();
+    if (roles.length > 1) {
+      return Container(
+        height: 50,
+        child: DropdownButton(
+          // todo fix this dropdown
+            items: roles
+                .map((e) => DropdownMenuItem(
+                      child: Text(e,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    )).toList(),
+            onChanged: ( index){
+
+            },
+            ),
+            );
+      // );
+    }
   }
 }

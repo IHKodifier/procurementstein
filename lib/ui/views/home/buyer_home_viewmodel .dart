@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 // import 'package:procuremenstein/models/app_user.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
 import 'package:procuremenstein/services/console_utility.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
-import 'package:procuremenstein/ui/views/home/buyer_home_view.dart';
-import 'package:procuremenstein/ui/views/home/seller_home_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 
@@ -39,16 +36,6 @@ class HomeViewModel extends BaseViewModel {
     return _authenticationService.getUserRoles();
   }
 
-  Widget getRoleBasedHome() {
-    switch (getUserRoles()[0]) {
-      case 'Seller':
-        return SellerHomeView();
-        break;
-      // todo handle more roles below
-      case 'Buyer':
-        return BuyerHomeView();
-    }
-  }
-
- 
+  String _title = 'Home View';
+  String get title => _title;
 }

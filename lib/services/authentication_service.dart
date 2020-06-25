@@ -48,6 +48,21 @@ class AuthenticationService {
         .getDocuments();
   }
 
+  List<String> getUserRoles() {
+    List<String> roles;
+    if (currentUserProfile['profileType'].toString().contains(',')) {
+      //handlessingle role users
+      roles = currentUserProfile['profileType'].toString().split(',');
+    } else {
+      roles = [currentUserProfile['profileType']];
+    }
+
+    // ConsoleUtility.printToConsole(roles.toString());
+    // ConsoleUtility.printToConsole(currentUserProfile.toString());
+
+    return roles;
+  }
+
   Future<bool> setAuthenticatedUser(String uid) async {
     try {
       var returnvalue = await getUserProfile(uid);
@@ -110,7 +125,8 @@ class AuthenticationService {
     userProfileData['photoUrl'] = 'http://i.pravatar.cc/300';
   }
 
-  Future<bool> createUserProfile(AuthResult authResult, var userProfileData) async {
+  Future<bool> createUserProfile(
+      AuthResult authResult, var userProfileData) async {
     _buildUserProfileMap(authResult, userProfileData);
     try {
       Firestore.instance
@@ -132,6 +148,6 @@ class AuthenticationService {
   }
   // Future<FireBaseUser> getFireUser=>_firebaseAuthInstance.c
 
-  Map<String, dynamic> getCurrentUser() => currentUserProfile!=null?
-  currentUserProfile:null;
+  Map<String, dynamic> getCurrentUser() =>
+      currentUserProfile != null ? currentUserProfile : null;
 }

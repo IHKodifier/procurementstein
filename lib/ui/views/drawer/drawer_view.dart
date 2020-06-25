@@ -25,6 +25,8 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             _buildProfileTypeTile(model),
             Divider(),
+            model.toggleRole(context),
+            // Divider(),
             _buildSignOut(context, model),
           ],
         ),

@@ -11,33 +11,37 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return ViewModelBuilder<HomeViewModel>.reactive(
         builder: (_, model, child) => Scaffold(
               appBar: AppBar(),
               drawer: AppDrawer(),
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('You have landed at ${model.title}'),
-                    RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        model.signOut();
-                      },
-                      child: Text('Log out'),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        model.showDialog();
-                      },
-                      color: Theme.of(context).primaryColor,
-                      child: Text('show Dialog'),
-                    ),
-                  ],
-                ),
-              ),
+              // body: Center(
+              //   child: Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Text('You have landed at ${model.title}'),
+              //       RaisedButton(
+              //         color: Theme.of(context).primaryColor,
+              //         onPressed: () {
+              //           model.signOut();
+              //         },
+              //         child: Text('Log out'),
+              //       ),
+              //       RaisedButton(
+              //         onPressed: () {
+              //           // model.showDialog();
+              //           model.getUserRoles();
+              //         },
+              //         color: Theme.of(context).primaryColor,
+              //         child: Text('show Dialog'),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              body: model.getRoleBasedHome(),
             ),
         viewModelBuilder: () => HomeViewModel());
+
   }
 }
