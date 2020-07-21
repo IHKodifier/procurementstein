@@ -13,13 +13,13 @@ class BuyerHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
         builder: (_, model, child) => Scaffold(
-              // appBar: AppBar(),
-              // drawer: AppDrawer(),
+              appBar: AppBar(),
+              drawer: AppDrawer(),
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(child: Text('You have landed at \n Buyer Home View')),
+                    Center(child: Text('You have landed at \n Buyer Home \n View')),
                     RaisedButton(
                       color: Theme.of(context).primaryColor,
                       onPressed: () {

@@ -1,26 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AppUser {
-  FirebaseUser _fireUser;
-  String _firstName;
-  String _lastName;
-  String _photourl;
+class UserProfile {
+  // FirebaseUser _fireUser;
+  final String id;
+  final String email;
+  final String firstName;
+  final String lastName;
+  final String profileTitle;
+  final String userRoles;
+  final String photoUrl;
 
-  String get firstName => _firstName;
-  FirebaseUser get fireUser => this._fireUser;
-  String get lastName => _lastName;
-  String get photoUrl => _photourl;
+  UserProfile(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.profileTitle,
+      this.userRoles,
+      this.photoUrl});
 
-  String get displayName {
-    return '$_firstName.i $_lastName';
+  UserProfile.fromData(Map<String, dynamic> data)
+      : id = data['id'],
+        firstName = data['firstName'],
+        lastName = data['lastName'],
+        email=data['email'],
+        profileTitle = data['profileTitle'],
+        userRoles = data['profileType'],
+        photoUrl = data['photoUrl'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'profileTitle': profileTitle,
+      'userRoles': userRoles,
+      'photoUrl': photoUrl,
+    };
   }
-
-  // String get lastSignIn => _lastSignedIn;
-
-  AppUser();
-  AppUser.fromFireUser(this._fireUser);
-
-  AppUser.fromFireUserAndNamedArgs(this._fireUser,this._firstName,this._lastName , this._photourl,);
-
-
 }

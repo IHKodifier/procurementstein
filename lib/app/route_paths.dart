@@ -3,3 +3,5 @@ const String LoginRoute = 'LoginRoute';
 const String HomeViewRoute = 'HomeViewRoute';
 const String NewAccountSuccessRoute = 'NewAccountSuccess';
 const String SignUPViewRoute = 'SignupView';
+const String StartupRoute = 'StartupView';
+const String WelcomeRoute = 'WelcomeRoute';

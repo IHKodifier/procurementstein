@@ -13,36 +13,35 @@ import 'package:procuremenstein/ui/views/home/home_view.dart';
 import 'package:procuremenstein/ui/views/login/login_view.dart';
 
 class LoginViewModel extends BaseModel {
+ 
+ 
   //all services needed
-  final AuthenticationService _authenticationService =
+  AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
-  final DialogService _dialogService = serviceLocator<DialogService>();
-  final NavigationService _navigationService =
-      serviceLocator<NavigationService>();
+  DialogService _dialogService = serviceLocator<DialogService>();
+  NavigationService _navigationService = serviceLocator<NavigationService>();
 
-  getCurrentUser() => _authenticationService.getCurrentUser();
 
-//attempts to login a user into app , returns a [true] if successfull or [false] otherwise
-  Future loginWithEmail(
-      {@required String email, @required String password}) async {
+//attempts to login a user into app , returns a [true] and navigates to [HomeViewRoute] if successfull or 
+// return [false] navigates to [LoginViewRoute] if login fails
+  Future<bool> loginWithEmail({
+    @required String email,
+    @required String password,
+  }) async {
     setBusy(true);
-    var result = await _authenticationService.loginWithEmail(
+      notifyListeners();
+    var loginSuccessfull = await _authenticationService.loginWithEmail(
         email: email, password: password);
-    setBusy(false);
-    if (result is bool) {
-      if (result) {
-        _navigationService.popAndPush('HomeViewRoute');
-      } else {
-        await _dialogService.showDialog(
-          title: 'Login Failure',
-          description: 'Couldn\'t login at this moment. Please try again later',
-        );
-      }
+
+    if (loginSuccessfull) {
+      notifyListeners();
+      _navigationService.navigateTo(routes.HomeViewRoute);
+      setBusy(false);
+      return true;
     } else {
-      await _dialogService.showDialog(
-        title: 'Login Failure',
-        description: result,
-      );
+      _navigationService.popAndPush(routes.LoginRoute);
+      setBusy(false);
+      return false;
     }
   }
 
@@ -63,58 +62,9 @@ class LoginViewModel extends BaseModel {
     _navigationService.navigateTo(routes.SignUPViewRoute);
   }
 
-  Widget handleStartupLogin({
-    BuildContext context,
-    // {context,
-    LoginViewModel model,
-    Widget childWhenAuthetnticated,
-    Widget childWhenNotAuthenticated,
-  }) {
-    setBusy(true);
-    return StreamBuilder(
-        stream: _authenticationService.authenticationStateStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            setBusy(false);
-            //todo set global userProfile
-            _authenticationService.setAuthenticatedUser(snapshot.data.uid);
-            return childWhenAuthetnticated;
-          } else {
-            setBusy(false);
-            return childWhenNotAuthenticated;
-          }
-        });
-
-    return StreamBuilder(
-      stream: _authenticationService.authenticationStateStream,
-      // initialData: initialData ,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          model.setCurrentUser(snapshot.data.uid);
-          notifyListeners();
-          return Container(
-            height: 0,
-            width: 0,
-          );
-        } else {
-          model.nullifyCurrentUser();
-          notifyListeners();
-          return Container(
-            height: 0,
-            width: 0,
-          );
-        }
-      },
-    );
-  }
-
   //set the global currentUser in [AuthenticationService]
-  Future setCurrentUser(String uid) async {
-    return await _authenticationService.setAuthenticatedUser(uid);
-  }
-
-  void nullifyCurrentUser() {
-    _authenticationService.currentUserProfile = null;
+  Future setGlobalAuthenticatedUser(String uid) async {
+    await _authenticationService.setAuthenticatedUser(uid);
     notifyListeners();
   }
 }

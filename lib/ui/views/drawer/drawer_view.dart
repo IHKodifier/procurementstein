@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:procuremenstein/services/authentication_service.dart';
+import 'package:procuremenstein/app/rounded_button.dart';
+// import 'package:procuremenstein/services/authentication_service.dart';
 import 'package:procuremenstein/ui/views/drawer/drawer_viewmodel.dart';
-// import 'package:procuremenstein/bloc/app_user.dart';
-// import 'package:procuremenstein/bloc/authentication_bloc.dart';
-
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,8 +23,6 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             _buildProfileTypeTile(model),
             Divider(),
-            model.toggleRole(context),
-            // Divider(),
             _buildSignOut(context, model),
           ],
         ),
@@ -36,10 +32,9 @@ class AppDrawer extends StatelessWidget {
 
   UserAccountsDrawerHeader _buildUserAccountsDrawerHeader(
       BuildContext context, DrawerViewModel model) {
-    model.currentUser;
-    return new UserAccountsDrawerHeader(
-      // colo
-      // margin: EdgeInsets.all(4.0),
+    model.currentUserProfile;
+    return UserAccountsDrawerHeader(
+      
       currentAccountPicture: _buildAccountPicture(model),
       accountName: _buildAccountName(context, model),
       accountEmail: _buildAccountEmail(model),
@@ -49,24 +44,24 @@ class AppDrawer extends StatelessWidget {
   Padding _buildAccountPicture(DrawerViewModel model) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: new CircleAvatar(
-        backgroundImage: NetworkImage(model.currentUser['photoUrl']),
-      ),
+      child: model.currentUserProfile['photoUrl']!=null? CircleAvatar(
+        backgroundImage: NetworkImage(model.currentUserProfile['photoUrl']),
+      ):null,
     );
   }
 
   Text _buildAccountName(BuildContext context, DrawerViewModel model) {
-    return new Text(
-      model.currentUser['email'],
+    return model.currentUserProfile['email']!=null? Text(
+      model.currentUserProfile['email'],
       style: Theme.of(context)
           .textTheme
           .title
           .copyWith(fontSize: 18, color: Colors.white),
-    );
+    ): null;
   }
 
-  Text _buildAccountEmail(DrawerViewModel model) =>
-      Text(model.currentUser['profileTitle']);
+  Text _buildAccountEmail(DrawerViewModel model) =>model.currentUserProfile['profileTitle']!=null?
+      Text(model.currentUserProfile['profileTitle']):null;
 
   ListTile _buildAboutTile(DrawerViewModel model) {
     return new ListTile(
@@ -99,7 +94,7 @@ class AppDrawer extends StatelessWidget {
 
   ListTile _buildProfileTypeTile(DrawerViewModel model) {
     return new ListTile(
-      title: new Text('Profile Type = ${model.currentUser['profileType']}'),
+      title: new Text('Roles Available  = ${model.currentUserProfile['profileType'].toString()}'),
       trailing: Icon(Icons.account_box),
       onTap: () {
         model.showDialogFeatureNotReady();
@@ -110,11 +105,11 @@ class AppDrawer extends StatelessWidget {
   Padding _buildSignOut(BuildContext context, DrawerViewModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 32),
-      child: RaisedButton(
-        onPressed: () {
+      child: RoundedButton(
+        press: () {
           model.signOut();
         },
-        child: Text('Sign Out'),
+        text: 'Sign Out',
         color: Theme.of(context).primaryColor,
       ),
     );

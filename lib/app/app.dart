@@ -4,21 +4,18 @@ import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 import 'package:procuremenstein/services/router.dart' as router;
+import 'package:procuremenstein/app/constants.dart' as constants;
 
 import 'package:procuremenstein/app/service_locator.dart';
 
 class App extends StatelessWidget {
   ThemeData _buildTheme(BuildContext context) {
     return Theme.of(context).copyWith(
-      primaryColor: Colors.orange,
+      primaryColor: constants.appPrimaryColor,
+      primaryColorLight: constants.appPrimaryLightColor,
       buttonColor: Theme.of(context).primaryColor,
-      buttonTheme: Theme.of(context).buttonTheme.copyWith(
-            // colo
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            buttonColor: Theme.of(context).primaryColor,
-            height: 40,
-          ),
+      accentColor: constants.appAccentColor,
+
     );
   }
 
@@ -38,7 +35,7 @@ class App extends StatelessWidget {
       //TODO FIX THIS
       onGenerateRoute: router.generateRoute,
       navigatorKey: serviceLocator<NavigationService>().navigationKey,
-      initialRoute: routes.LoginRoute,
+      initialRoute: routes.StartupRoute,
     );
   }
 }

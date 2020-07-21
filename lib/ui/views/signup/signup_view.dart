@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:procuremenstein/app/rounded_button.dart';
 import 'package:procuremenstein/ui/shared/busy_overlay.dart';
 import 'package:procuremenstein/ui/shared/loding_spinner.dart';
-import 'package:procuremenstein/ui/views/login/signup_viewmodel.dart';
+import 'package:procuremenstein/ui/views/signup/signup_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class SignupView extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _profileTitleController = TextEditingController();
+  TextEditingController _fullNameController = TextEditingController();
   Map<String, dynamic> userData = Map<String, dynamic>();
 
 //handles the user related additional data
@@ -23,6 +26,7 @@ class SignupView extends StatelessWidget {
 
   Widget _buildSingleChildScrollView(
       BuildContext context, SignupViewModel model) {
+    Size size = MediaQuery.of(context).size;
     return BusyOverlay(
       show: model.isBusy,
       child: new Scaffold(
@@ -36,9 +40,15 @@ class SignupView extends StatelessWidget {
                 child: _buildStack(),
               ),
               Container(
-                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                  padding: EdgeInsets.only(top: 5, left: 20.0, right: 20.0),
                   child: Column(
                     children: <Widget>[
+                      SvgPicture.asset(
+                        'assets/icons/signup.svg',
+                        height: size.height * 0.25,
+                      ),
+                      _buildFullNameTextField(context),
+                      SizedBox(height: 10.0),
                       _buildEmailTextField(context),
                       SizedBox(height: 10.0),
                       _buildPasswordTextField(context),
@@ -62,26 +72,23 @@ class SignupView extends StatelessWidget {
 
   Container _buildGoBackButton(BuildContext context) {
     return Container(
-      height: 40.0,
-      color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.black, style: BorderStyle.solid, width: 1.0),
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(20.0)),
-        child: InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Center(
-            child: Text('Go Back',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontFamily: 'Montserrat')),
+        height: 80.0,
+        // color: Theme.of(context).primaryColorLight,
+        child: Container(
+          // decoration: BoxDecoration(
+          //     border: Border.all(
+          //         color: Colors.black, style: BorderStyle.solid, width: 1.0),
+          // borderRadius: BorderRadius.circular(20.0)),
+          child: RoundedButton(
+            color: Theme.of(context).primaryColorLight,
+            press: () {
+              //todo service based navigation
+              Navigator.of(context).pop();
+            },
+            textColor: Theme.of(context).primaryColor,
+            text: 'Go Back',
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Container _buildSignUpButton(BuildContext context, SignupViewModel model) {
@@ -89,29 +96,25 @@ class SignupView extends StatelessWidget {
       // decoration: BoxDecoration(
       //   borderRadius: BorderRadius.circular(20.0),
       // ),
-      height: 40.0,
-      child: RaisedButton(
+      height: 80.0,
+      child: RoundedButton(
         // shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         color: Theme.of(context).primaryColor,
-        onPressed: () {
-          // setbu
+        press: () {
+          //todo implement service based navigation
           model.setBusy(true);
           userData['profileTitle'] = _profileTitleController.text;
+          userData['fullName'] = _fullNameController.text;
+           userData['email'] = _emailController.text;
+                    
           model.signupWithEmil(
-              _emailController.text, _passwordController.text, userData);
+            _emailController.text,
+            _passwordController.text,
+            userData,
+          );
         },
-        elevation: 7.0,
-        child: Center(
-          child: model.isBusy
-              ? LoadingSpinner()
-              : Text(
-                  'SIGNUP',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
-                ),
-        ),
+        // elevation: 7.0,
+        text: 'SIGNUP',
       ),
     );
   }
@@ -120,7 +123,7 @@ class SignupView extends StatelessWidget {
     return TextField(
       controller: _profileTitleController,
       decoration: InputDecoration(
-          labelText: 'PROFILE TITLE ',
+          labelText: 'BUSINESS TITLE ',
           labelStyle: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,
@@ -150,6 +153,22 @@ class SignupView extends StatelessWidget {
       controller: _emailController,
       decoration: InputDecoration(
           labelText: 'EMAIL',
+          labelStyle: TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey),
+          // hintText: 'EMAIL',
+          // hintStyle: ,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
+    );
+  }
+
+  TextField _buildFullNameTextField(BuildContext context) {
+    return TextField(
+      controller: _fullNameController,
+      decoration: InputDecoration(
+          labelText: 'FULL NAME',
           labelStyle: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,
@@ -233,7 +252,7 @@ class SignupView extends StatelessWidget {
       color: Colors.black,
       renderBorder: false,
       // fillColor: Colors.deepPurple,
-      splashColor: Colors.deepOrange,
+      splashColor: Theme.of(context).primaryColorLight,
     );
   }
 
@@ -262,4 +281,6 @@ class SignupView extends StatelessWidget {
       ],
     );
   }
+
+ 
 }

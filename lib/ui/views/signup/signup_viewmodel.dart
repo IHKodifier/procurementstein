@@ -9,11 +9,9 @@ import 'package:procuremenstein/services/navigation_service.dart';
 
 class SignupViewModel extends BaseModel {
   //services
-  final AuthenticationService _authenticationService =
-      serviceLocator<AuthenticationService>();
-  final DialogService _dialogService = serviceLocator<DialogService>();
-  final NavigationService _navigationService =
-      serviceLocator<NavigationService>();
+   AuthenticationService _authenticationService =serviceLocator<AuthenticationService>();
+   DialogService _dialogService = serviceLocator<DialogService>();
+   NavigationService _navigationService =serviceLocator<NavigationService>();
 
   //captures the state of toggle buttons
   List<bool> roleSelectionValues = [false, false];
@@ -24,7 +22,7 @@ class SignupViewModel extends BaseModel {
 //user info and profile data
   Map<String, dynamic> userData;
 
-  //set value of [togglebuttonat] at index
+  //set value of [togglebutton] at index
   void setToggleButtonSelectionValueAt(bool value, int index) {
     resetAllToggleButtons();
     roleSelectionValues[index] = value;
@@ -59,7 +57,7 @@ class SignupViewModel extends BaseModel {
     } else {
       await _dialogService.showDialog(
         title: 'Login Failure',
-        description: result,
+        description: result.toString(),
       );
     }
   }
@@ -70,9 +68,9 @@ class SignupViewModel extends BaseModel {
     var userData,
   ) async {
     setBusy(true);
-    userData['profileType'] = selectedRole;
+    userData['roles'] = selectedRole;
     try {
-      var loginResult = await _authenticationService.signUpWithEmail(
+      var loginResult = await _authenticationService.signupWithEmail(
           email: email, password: password, userData: userData);
       setBusy(false);
 

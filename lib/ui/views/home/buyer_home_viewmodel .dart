@@ -7,12 +7,11 @@ import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 
-class HomeViewModel extends BaseViewModel {
-  AuthenticationService _authenticationService =
-      serviceLocator<AuthenticationService>();
+class BuyerHomeViewModel extends BaseViewModel {
+  AuthenticationService _authenticationService = serviceLocator<AuthenticationService>();
   NavigationService _navigationService = serviceLocator<NavigationService>();
   DialogService _dialogService = serviceLocator<DialogService>();
-  // AppUser _currenrUser = _authenticationService.currentUser();
+  // UserProfile _currenrUser = _authenticationService.currentUser();
 
   void signOut() {
     _authenticationService.signout();
@@ -33,7 +32,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   List<String> getUserRoles() {
-    return _authenticationService.getUserRoles();
+    // return _authenticationService.getUserRoles();
   }
 
   String _title = 'Home View';

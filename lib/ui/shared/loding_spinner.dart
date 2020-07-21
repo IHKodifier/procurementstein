@@ -17,7 +17,7 @@ class LoadingSpinner extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[ 
           SpinKitThreeBounce(
-            color: Colors.white,
+            color: Theme.of(context).primaryColor,
             size: 30,
           ),
           // SizedBox(height:10),

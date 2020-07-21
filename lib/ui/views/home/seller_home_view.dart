@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:procuremenstein/app/rounded_button.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/services/authentication_service.dart';
 import 'package:procuremenstein/ui/views/drawer/drawer_view.dart';
@@ -13,27 +14,21 @@ class SellerHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
         builder: (_, model, child) => Scaffold(
-              // appBar: AppBar(),
-              // drawer: AppDrawer(),
+              appBar: AppBar(),
+              drawer: AppDrawer(),
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(child: Text('You have landed at \nseller Home View')),
-                    // RaisedButton(
-                    //   color: Theme.of(context).primaryColor,
-                    //   onPressed: () {
-                    //     model.signOut();
-                    //   },
-                    //   child: Text('Log out'),
-                    // ),
-                    RaisedButton(
-                      onPressed: () {
-                        // model.showDialog();
-                        model.getUserRoles();
+                    Center(
+                        child:
+                            Text('You have landed at \nseller \nHome \nView')),
+                    RoundedButton(
+                      press: () {
+                        model.signOut();
                       },
                       color: Theme.of(context).primaryColor,
-                      child: Text('show Dialog'),
+                      text: 'Sign Out',
                     ),
                   ],
                 ),

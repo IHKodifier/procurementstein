@@ -7,15 +7,14 @@ import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:procuremenstein/ui/views/home/buyer_home_view.dart';
 import 'package:procuremenstein/ui/views/home/seller_home_view.dart';
+import 'package:procuremenstein/ui/views/login/login_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 
 class HomeViewModel extends BaseViewModel {
-  AuthenticationService _authenticationService =
-      serviceLocator<AuthenticationService>();
+  AuthenticationService _authenticationService = serviceLocator<AuthenticationService>();
   NavigationService _navigationService = serviceLocator<NavigationService>();
   DialogService _dialogService = serviceLocator<DialogService>();
-  // AppUser _currenrUser = _authenticationService.currentUser();
 
   void signOut() {
     _authenticationService.signout();
@@ -35,20 +34,24 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  List<String> getUserRoles() {
-    return _authenticationService.getUserRoles();
-  }
+  Widget getDefaultHomeforUser() {
+    ConsoleUtility.printToConsole(
+        'defaultRole= ${_authenticationService.defaultRole}');
 
-  Widget getRoleBasedHome() {
-    switch (getUserRoles()[0]) {
+    switch (_authenticationService.defaultRole) {
+      case 'Buyer':
+        ConsoleUtility.printToConsole('returning BuyerHomeView ');
+        return BuyerHomeView();
+        break;
       case 'Seller':
+        ConsoleUtility.printToConsole('returning SellerHomeView ');
         return SellerHomeView();
         break;
-      // todo handle more roles below
-      case 'Buyer':
-        return BuyerHomeView();
+      default:
+        return LoginView();
     }
   }
 
- 
+  String _title = 'Home View Widget';
+  String get title => _title;
 }

@@ -6,16 +6,16 @@ class NewAccountSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Sign Up ',
-          style: Theme.of(context)
-              .textTheme
-              .title
-              .copyWith(color: Theme.of(context).primaryColor),
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'Sign Up ',
+      //     style: Theme.of(context)
+      //         .textTheme
+      //         .title
+      //         .copyWith(color: Theme.of(context).primaryColor),
+      //   ),
+      //   centerTitle: true,
+      // ),
       body: Center(
         child: Container(
           width: 350,
@@ -32,7 +32,7 @@ class NewAccountSuccess extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .display1
-                          .copyWith(fontSize: 22.0),
+                          .copyWith(fontSize: 22.0, color: Theme.of(context).primaryColor),
                     ),
                   ),
                   SizedBox(
@@ -47,7 +47,7 @@ class NewAccountSuccess extends StatelessWidget {
                     child: Container(
                       height: 180,
                       width: 180,
-                      color: Theme.of(context).accentColor.withOpacity(0.4),
+                      color: Theme.of(context).primaryColor.withOpacity(0.15),
                       child: Padding(
                         padding: EdgeInsets.all(12),
                         child: Icon(
@@ -66,6 +66,7 @@ class NewAccountSuccess extends StatelessWidget {
                     child: RaisedButton(
                         child: Text('PROCEED TO LOGIN '),
                         color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
                         onPressed: () {
                           Navigator.popAndPushNamed(context, '/login');
                         }),
