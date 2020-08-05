@@ -16,37 +16,47 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "WELCOME TO B2B EXPRESS",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor),
+            Padding(
+              padding: const EdgeInsets.only(top:16.0),
+              child: Text(
+                "WELCOME TO ",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor),
+              ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top:4.0),
+              child: Text(
+                "B2B Express ",
+                style:Theme.of(context).textTheme.headline5.copyWith( 
+                // TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Theme.of(context).primaryColor),
+              ),
+            ),
+            
             SizedBox(height: size.height * 0.02),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding: const EdgeInsets.only(left: 64.0,right: 32),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Your one stop for Business to Business',
+                    'Your ONE AND ONLY  Online stop for Business to Business Procurements',
                     style: Theme.of(context).textTheme.subtitle1.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontStyle: FontStyle.italic),
                   ),
-                  Text(
-                    '  Procurements',
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontStyle: FontStyle.italic),
-                  ),
+                  
                 ],
               ),
             ),
             SizedBox(height: size.height * 0.04),
             SvgPicture.asset(
               "assets/icons/chat.svg",
-              height: size.height * 0.45,
+              height: size.height * 0.30,
             ),
             SizedBox(height: size.height * 0.04),
             RoundedButton(
@@ -87,20 +97,16 @@ class Body extends StatelessWidget {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding: const EdgeInsets.all( 24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('powered by',
+                  Text('powered by  EnigmaTek Inc.',
                   style: Theme.of(context).textTheme.subtitle1.copyWith(
                             color: Theme.of(context).primaryColor,
                             fontStyle: FontStyle.italic
                           )),
-                  Text('  EnigmaTek Inc.',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontStyle: FontStyle.italic
-                          )),
+                 
                 ],
               ),
             ),

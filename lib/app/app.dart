@@ -15,6 +15,7 @@ class App extends StatelessWidget {
       primaryColorLight: constants.appPrimaryLightColor,
       buttonColor: Theme.of(context).primaryColor,
       accentColor: constants.appAccentColor,
+      backgroundColor: constants.appScaffoldBackgroundColor,
 
     );
   }

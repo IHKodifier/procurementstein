@@ -34,7 +34,6 @@ class AppDrawer extends StatelessWidget {
       BuildContext context, DrawerViewModel model) {
     model.currentUserProfile;
     return UserAccountsDrawerHeader(
-      
       currentAccountPicture: _buildAccountPicture(model),
       accountName: _buildAccountName(context, model),
       accountEmail: _buildAccountEmail(model),
@@ -44,24 +43,39 @@ class AppDrawer extends StatelessWidget {
   Padding _buildAccountPicture(DrawerViewModel model) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: model.currentUserProfile['photoUrl']!=null? CircleAvatar(
-        backgroundImage: NetworkImage(model.currentUserProfile['photoUrl']),
-      ):null,
+      child: model.currentUserProfile['photoUrl'] != null
+          ? CircleAvatar(
+              backgroundImage:
+                  NetworkImage(model.currentUserProfile['photoUrl']),
+            )
+          : null,
     );
   }
 
   Text _buildAccountName(BuildContext context, DrawerViewModel model) {
-    return model.currentUserProfile['email']!=null? Text(
-      model.currentUserProfile['email'],
+    String fullName;
+    if (model.currentUserProfile['firstName'] != null) {
+      fullName = model.currentUserProfile['firstName'];
+      if (model.currentUserProfile['lastName'] != null) {
+        fullName += ' ' + model.currentUserProfile['lastName'];
+      }
+    } else {
+      fullName = ' ';
+    }
+
+    return Text(
+      fullName,
       style: Theme.of(context)
           .textTheme
           .title
           .copyWith(fontSize: 18, color: Colors.white),
-    ): null;
+    );
   }
 
-  Text _buildAccountEmail(DrawerViewModel model) =>model.currentUserProfile['profileTitle']!=null?
-      Text(model.currentUserProfile['profileTitle']):null;
+  Text _buildAccountEmail(DrawerViewModel model) =>
+      model.currentUserProfile['email'] != null
+          ? Text(model.currentUserProfile['email'])
+          : null;
 
   ListTile _buildAboutTile(DrawerViewModel model) {
     return new ListTile(
@@ -94,7 +108,8 @@ class AppDrawer extends StatelessWidget {
 
   ListTile _buildProfileTypeTile(DrawerViewModel model) {
     return new ListTile(
-      title: new Text('Roles Available  = ${model.currentUserProfile['profileType'].toString()}'),
+      title: new Text(
+          'Roles Available  = ${model.currentUserProfile['userRoles'].toString()}'),
       trailing: Icon(Icons.account_box),
       onTap: () {
         model.showDialogFeatureNotReady();

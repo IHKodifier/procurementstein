@@ -56,7 +56,7 @@ class DefaultChildWhenBusy extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              color: Theme.of(context).accentColor.withOpacity(1),
+              color: Theme.of(context).backgroundColor.withOpacity(1),
               height: screenSize.height * .2,
               width: screenSize.width * .4,
               child: Column(

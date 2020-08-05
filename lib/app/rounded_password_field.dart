@@ -2,21 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:procuremenstein/app/text_field_container.dart';
 import 'package:procuremenstein/app/constants.dart';
 
-class RoundedPasswordField extends StatelessWidget {
+class RoundedPasswordField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController textEditingController;
-  const RoundedPasswordField({
+  RoundedPasswordField({
     Key key,
-    this.onChanged, this.textEditingController,
+    this.onChanged,
+    this.textEditingController,
+    // this.obscureText,
   }) : super(key: key);
+
+  @override
+  _RoundedPasswordFieldState createState() => _RoundedPasswordFieldState();
+}
+
+class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
+  bool passwordIsHidden = true;
+
+
+
+  void togglePasswordVisibility() {
+    setState(() {
+      passwordIsHidden = !passwordIsHidden;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
-        controller: textEditingController,
-        obscureText: true,
-        onChanged: onChanged,
+        controller: widget.textEditingController,
+        obscureText: passwordIsHidden,
+        onChanged: widget.onChanged,
         cursorColor: appPrimaryColor,
         decoration: InputDecoration(
           hintText: "Password",
@@ -24,10 +41,12 @@ class RoundedPasswordField extends StatelessWidget {
             Icons.lock,
             color: appPrimaryColor,
           ),
-          suffixIcon: Icon(
-            Icons.visibility,
-            color: appPrimaryColor,
-          ),
+          suffixIcon: IconButton(
+              color: appPrimaryColor,
+              onPressed: togglePasswordVisibility,
+              icon: Icon(
+                Icons.visibility,
+              )),
           border: InputBorder.none,
         ),
       ),

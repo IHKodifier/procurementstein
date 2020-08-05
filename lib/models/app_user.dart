@@ -1,7 +1,8 @@
+// import "package:firebase_auth/firebase_auth.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/';
 
 class UserProfile {
-  // FirebaseUser _fireUser;
   final String id;
   final String email;
   final String firstName;
@@ -33,6 +34,7 @@ class UserProfile {
       'id': id,
       'firstName': firstName,
       'lastName': lastName,
+      'email':email,
       'profileTitle': profileTitle,
       'userRoles': userRoles,
       'photoUrl': photoUrl,

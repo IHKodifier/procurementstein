@@ -21,7 +21,7 @@ class FirestoreService {
           .setData(userProfile.toJson());
     } catch (e) {
       ConsoleUtility.printToConsole(
-          'authentication service\n createUserProfile\nerror encountered: ${e.toString()}');
+          'Firestore service\n createUserProfile\nerror encountered: \n${e.toString()}');
       dialogService.showDialog(
         title: 'Error',
         description: e.message,

@@ -64,25 +64,25 @@ class AuthenticationService {
     }
   }
 
-  Future<QuerySnapshot> getUserProfile(String uid) async {
+  Future<DocumentSnapshot> getUserProfile(String uid) async {
     return Firestore.instance
-        .collection('/userProfiles')
-        .where('uid', isEqualTo: uid)
-        .getDocuments();
+        .collection('/userProfiles').document(uid).get();
+        // .where('uid', isEqualTo: uid)
+        // .getDocuments();
   }
 
   setAuthenticatedUser(String uid) async {
     try {
       var returnvalue = await getUserProfile(uid);
-      if (returnvalue.documents.length > 0) {
-        currentUserProfile = returnvalue.documents[0].data;
+      if (returnvalue.data!=null) {
+        currentUserProfile = returnvalue.data;
         ConsoleUtility.printToConsole(currentUserProfile.toString());
         var roles = getAllRolesForUser();
         defaultRole = roles[0];
         ConsoleUtility.printToConsole(
             'defaultRole  is now set to " $defaultRole"');
       } else {
-        throw Exception('default user not set');
+        // throw Exception('default user not set');
       }
     } catch (e) {
       _dialogService.showDialog(title: e.message);
@@ -92,11 +92,11 @@ class AuthenticationService {
   Future<bool> isUserLoggedIn() async {
     var user = await FirebaseAuth.instance.currentUser();
     if (user != null) {
-      ConsoleUtility.printToConsole('isUserLoggedIn returned ${user.toString()}');
+      ConsoleUtility.printToConsole('isUserLoggedIn returned ${user==null}');
       await setAuthenticatedUser(user.uid);
       return true;
     }
-    ConsoleUtility.printToConsole('isUserLoggedIn returned ${user.toString()}');
+    ConsoleUtility.printToConsole('isUserLoggedIn returned ${user!=null}');
     return false;
   }
 
@@ -121,6 +121,7 @@ class AuthenticationService {
             firstName: userData['fullName'],
             email: email,
             userRoles: userData['roles'],
+            photoUrl: 'https://i.pravatar.cc/300',
             profileTitle: userData['profileTitle']));
         return authResult.user != null;
       }

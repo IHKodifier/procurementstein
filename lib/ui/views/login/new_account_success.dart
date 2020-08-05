@@ -1,84 +1,120 @@
 import 'package:flutter/material.dart';
-// import 'package:philanthroctor/packageLib.dart';
-// import 'package:philanthroctor/widgets/philanthroctorLogo.dart';
+import 'package:procuremenstein/app/rounded_button.dart';
+import 'package:procuremenstein/app/service_locator.dart';
+import 'package:procuremenstein/app/route_paths.dart' as routes;
+import 'package:procuremenstein/services/navigation_service.dart';
 
 class NewAccountSuccess extends StatelessWidget {
+  final NavigationService navigationService =
+      serviceLocator<NavigationService>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Sign Up ',
-      //     style: Theme.of(context)
-      //         .textTheme
-      //         .title
-      //         .copyWith(color: Theme.of(context).primaryColor),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      body: Center(
-        child: Container(
-          width: 350,
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
           child: ListView(
             children: <Widget>[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top:24.0,left: 16.0),
-                    child: Text(
-                      'You have succesfully created an account for yourself on ProcuremenStein ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .display1
-                          .copyWith(fontSize: 22.0, color: Theme.of(context).primaryColor),
-                    ),
-                  ),
+                  SizedBox(height: 20.0),
+                  _buildCongrats(context),
+                  SizedBox(height: 20),
+                  // _buildOkIcon(context),
+                  // SizedBox(height: 12.0),
+                  _buildProfileInvite(context),
+                 
                   SizedBox(
-                    height: 12.0,
+                    height: 100,
                   ),
-                  // PhilanthroctorLogo(),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(150),
-                    child: Container(
-                      height: 180,
-                      width: 180,
-                      color: Theme.of(context).primaryColor.withOpacity(0.15),
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Icon(
-                          Icons.done,
-                          color: Theme.of(context).primaryColor,
-                          size: 150,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: RaisedButton(
-                        child: Text('PROCEED TO LOGIN '),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          Navigator.popAndPushNamed(context, '/login');
-                        }),
-                  ),
-                  SizedBox(height: 100,),
                 ],
               ),
             ],
-            
           ),
         ),
       ),
+    );
+  }
+
+  ClipRRect _buildOkIcon(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(40),
+      child: Container(
+        height: 80,
+        width: 80,
+        color: Theme.of(context).primaryColor.withOpacity(0.15),
+        child: Center(
+          child: Icon(
+            Icons.done,
+            color: Theme.of(context).primaryColor,
+            size: 80,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCongrats(BuildContext context) {
+    return Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.center,
+      // spacing: 555,
+      children: [
+        _buildOkIcon(context),
+        Text(
+          'Congratulations!',
+          style: Theme.of(context).textTheme.headline4.copyWith(
+                fontSize: 32.0,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric( horizontal:36.0, vertical: 16),
+          child: Text(
+            'ّYou have successfully created an account',
+            style: Theme.of(context).textTheme.headline6.copyWith(
+                fontSize: 22.0, 
+                color: Theme.of(context).primaryColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildProfileInvite(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal:36,vertical: 12),
+          child: Text(
+              'Its a good time to build your  Business Profile.  a good Business Profile helps your business grow ', style: Theme.of(context).textTheme.subtitle2.copyWith(color:Theme.of(context).primaryColor,fontSize: 16)),
+        ),
+        SizedBox(height: 20),
+        RoundedButton(
+          color: Theme.of(context).primaryColor,
+          textColor: Colors.white,
+          text: 'BUILD PROFILE',
+          press: () {
+            // navigationService.navigateTo(routes.)
+          },
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text('You can also do it later.',style: Theme.of(context).textTheme.subtitle2.copyWith(color:Theme.of(context).primaryColor,fontSize: 18)),
+        ),
+        RoundedButton(
+          color: Theme.of(context).primaryColor,
+          textColor: Colors.white,
+          text: 'Proceed to Login',
+          press: () {
+            navigationService.navigateTo(routes.LoginRoute);
+          },
+        ),
+      ],
     );
   }
 }

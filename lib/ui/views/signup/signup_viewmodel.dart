@@ -6,18 +6,21 @@ import 'package:procuremenstein/services/authentication_service.dart';
 import 'package:procuremenstein/services/console_utility.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
 import 'package:procuremenstein/services/navigation_service.dart';
+import 'package:procuremenstein/app/route_paths.dart' as routes;
 
 class SignupViewModel extends BaseModel {
   //services
-   AuthenticationService _authenticationService =serviceLocator<AuthenticationService>();
-   DialogService _dialogService = serviceLocator<DialogService>();
-   NavigationService _navigationService =serviceLocator<NavigationService>();
+  AuthenticationService _authenticationService =
+      serviceLocator<AuthenticationService>();
+  DialogService _dialogService = serviceLocator<DialogService>();
+  NavigationService _navigationService = serviceLocator<NavigationService>();
 
   //captures the state of toggle buttons
   List<bool> roleSelectionValues = [false, false];
 
   //role handling
   String selectedRole;
+  // boll passwordVisibility = false;
   List<String> roles = ['Buyer', 'Seller'];
 //user info and profile data
   Map<String, dynamic> userData;
@@ -70,23 +73,28 @@ class SignupViewModel extends BaseModel {
     setBusy(true);
     userData['roles'] = selectedRole;
     try {
-      var loginResult = await _authenticationService.signupWithEmail(
+      var SignupResult = await _authenticationService.signupWithEmail(
           email: email, password: password, userData: userData);
       setBusy(false);
 
-      if (loginResult != null) {
-        
+      if (SignupResult != null) {
         //user was SUCCESSFULLY CREATED in Firbase
-        _navigationService.popAndPush('HomeViewRoute');
-      } else if (loginResult == null) {
+        _navigationService.popAndPush(routes.NewAccountSuccessRoute);
+      } else if (SignupResult == null) {
         //user was not successfully created
-
-      } else {
-        setBusy(false);
-      }
+        ConsoleUtility.printToConsole('user sign up failed');
+      } else {}
     } catch (e) {
       setBusy(false);
       ConsoleUtility.printToConsole(e.toString());
     }
+  }
+
+  void goBack() {
+    _navigationService.goBack();
+  }
+
+  togglePasswordVisibility() {
+    notifyListeners();
   }
 }

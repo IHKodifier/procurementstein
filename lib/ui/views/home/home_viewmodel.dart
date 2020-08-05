@@ -8,6 +8,8 @@ import 'package:procuremenstein/services/navigation_service.dart';
 import 'package:procuremenstein/ui/views/home/buyer_home_view.dart';
 import 'package:procuremenstein/ui/views/home/seller_home_view.dart';
 import 'package:procuremenstein/ui/views/login/login_view.dart';
+import 'package:procuremenstein/ui/views/startup/startup_view.dart';
+import 'package:procuremenstein/ui/views/welcome/welcome_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:procuremenstein/app/route_paths.dart' as routes;
 
@@ -48,7 +50,7 @@ class HomeViewModel extends BaseViewModel {
         return SellerHomeView();
         break;
       default:
-        return LoginView();
+        return WelcomeView();
     }
   }
 

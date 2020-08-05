@@ -10,13 +10,15 @@ import 'package:procuremenstein/app/route_paths.dart' as routes;
 
 class DrawerViewModel extends BaseViewModel {
 //services
-
-dynamic get currentUserProfile=>_authenticationService.currentUserProfile;
   AuthenticationService _authenticationService = serviceLocator<AuthenticationService>();
   NavigationService _navigationService = serviceLocator<NavigationService>();
   DialogService _dialogService = serviceLocator<DialogService>();
 
+
+dynamic get currentUserProfile=>_authenticationService.currentUserProfile;
+
   Future showDialogFeatureNotReady() async {
+
     ConsoleUtility.printToConsole('dialog called');
     var dialogResult = await _dialogService.showDialog(
       title: 'Feature not ready yet!!',
@@ -34,7 +36,6 @@ dynamic get currentUserProfile=>_authenticationService.currentUserProfile;
     _authenticationService.defaultRole = null;
     _authenticationService.currentUserProfile = null;
     _navigationService.navigateTo(routes.LoginRoute);
-    // FirebaseUser fireuser;
-    // fireuser.uid
+    
   }
 }

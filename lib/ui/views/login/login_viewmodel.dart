@@ -35,6 +35,7 @@ class LoginViewModel extends BaseModel {
 
     if (loginSuccessfull) {
       notifyListeners();
+      // await _authenticationService.setAuthenticatedUser(uid)
       _navigationService.navigateTo(routes.HomeViewRoute);
       setBusy(false);
       return true;
@@ -44,6 +45,8 @@ class LoginViewModel extends BaseModel {
       return false;
     }
   }
+
+  
 
   Future showDialogFeatureNotReady() async {
     ConsoleUtility.printToConsole('dialog called');
@@ -62,9 +65,9 @@ class LoginViewModel extends BaseModel {
     _navigationService.navigateTo(routes.SignUPViewRoute);
   }
 
-  //set the global currentUser in [AuthenticationService]
-  Future setGlobalAuthenticatedUser(String uid) async {
-    await _authenticationService.setAuthenticatedUser(uid);
-    notifyListeners();
-  }
+  //sets the global [currentUserProfile] in [AuthenticationService]
+  // Future setGlobalAuthenticatedUser(String uid) async {
+  //   await _authenticationService.setAuthenticatedUser(uid);
+  //   notifyListeners();
+  // }
 }

@@ -42,19 +42,22 @@ class LoginView extends StatelessWidget {
   _buildBody(BuildContext context, LoginViewModel model) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-          child: Background(
+      child: Background(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 "LOGIN",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline5.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
               ),
               SizedBox(height: size.height * 0.03),
               SvgPicture.asset(
                 "assets/icons/login.svg",
-                height: size.height * 0.35,
+                height: size.height * 0.30,
               ),
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
@@ -64,6 +67,7 @@ class LoginView extends StatelessWidget {
               ),
               RoundedPasswordField(
                 textEditingController: _passwordController,
+                // obscureText: true,
                 onChanged: (value) {},
               ),
               RoundedButton(
@@ -80,14 +84,7 @@ class LoginView extends StatelessWidget {
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
                 press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        // return SignUpScreen();
-                      },
-                    ),
-                  );
+                  model.navigateToSignup();
                 },
               ),
             ],

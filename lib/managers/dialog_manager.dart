@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:procuremenstein/app/service_locator.dart';
 import 'package:procuremenstein/models/dialog_models.dart';
 import 'package:procuremenstein/services/dialog_service.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import "package:rflutter_alert/rflutter_alert.dart";
 
 class DialogManager extends StatefulWidget {
   final Widget child;

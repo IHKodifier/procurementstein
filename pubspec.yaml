@@ -23,13 +23,13 @@ dependencies:
   google_fonts: 
   # font_aswesome:
   flutter_spinkit: 
-  rflutter_alert: ^1.0.3
+  rflutter_alert: 
   font_awesome_flutter: ^8.8.1
-  flutter_svg: ^0.18.0
+  flutter_svg: 
 
   # cloud and firebase
-  firebase_auth: ^0.16.0
-  cloud_firestore: ^0.13.5
+  firebase_auth: 
+  cloud_firestore: 
   
   # full tutorial at https://www.youtube.com/watch?v=8VJ-F-bZORE
   multilevel_drawer: ^1.0.2
@@ -41,7 +41,7 @@ dependencies:
   stacked_services:  
 
   # inversion of control
-  get_it: ^4.0.2
+  get_it: ^4.0.4
   injectable:
 
   # The following adds the Cupertino Icons font to your application.
